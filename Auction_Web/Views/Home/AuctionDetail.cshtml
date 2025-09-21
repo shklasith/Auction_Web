@@ -1,0 +1,293 @@
+@{
+    ViewData["Title"] = "Auction Details";
+}
+
+<!-- Include SignalR JavaScript library -->
+<script src="https://unpkg.com/@@microsoft/signalr@latest/dist/browser/signalr.js"></script>
+
+<!-- Include our custom bidding styles and scripts -->
+<link rel="stylesheet" href="~/css/bidding.css" />
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Auction Images -->
+            <div class="auction-images mb-4">
+                <div id="auctionCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="https://via.placeholder.com/600x400" class="d-block w-100" alt="Auction Item">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auction Description -->
+            <div class="auction-description">
+                <h2>Auction Description</h2>
+                <p>This is a sample auction item for demonstrating the real-time bidding system.</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Connection Status -->
+            <div id="connection-status" class="connection-status success">Connected</div>
+
+            <!-- Bidding Container -->
+            <div class="bidding-container">
+                <!-- Auction Timer -->
+                <div id="auction-timer" class="auction-timer">
+                    Loading...
+                </div>
+
+                <!-- Current Price -->
+                <div id="current-price" class="current-price">
+                    $100.00
+                </div>
+
+                <!-- Auction Stats -->
+                <div class="auction-stats">
+                    <div class="stat-card">
+                        <span id="bid-count" class="stat-value">0</span>
+                        <div class="stat-label">Bids</div>
+                    </div>
+                    <div class="stat-card">
+                        <span id="view-count" class="stat-value">1</span>
+                        <div class="stat-label">Views</div>
+                    </div>
+                    <div class="stat-card">
+                        <span id="watchlist-count" class="stat-value">0</span>
+                        <div class="stat-label">Watching</div>
+                    </div>
+                </div>
+
+                <!-- Auto-extend indicator -->
+                <div class="auto-extend-indicator" style="display: none;">
+                    Auto-extend enabled: Auction will be extended if bids are placed in the final minutes
+                </div>
+
+                <!-- Bid Input Section -->
+                <div class="bid-input-section">
+                    <div class="bid-info">
+                        Next minimum bid: $<span id="next-min-bid">105.00</span>
+                    </div>
+                    
+                    <!-- Quick Bid Buttons -->
+                    <div class="quick-bid-buttons">
+                        <button class="quick-bid-btn" onclick="setQuickBid(5)">+$5</button>
+                        <button class="quick-bid-btn" onclick="setQuickBid(10)">+$10</button>
+                        <button class="quick-bid-btn" onclick="setQuickBid(25)">+$25</button>
+                        <button class="quick-bid-btn" onclick="setQuickBid(50)">+$50</button>
+                    </div>
+
+                    <div class="bid-input-group">
+                        <input type="number" id="bid-amount" class="bid-amount-input" 
+                               placeholder="Enter bid amount" min="105.00" step="0.01" value="105.00">
+                        <button id="place-bid-btn" class="place-bid-btn" onclick="placeBid()">
+                            Place Bid
+                        </button>
+                    </div>
+
+                    <div class="bid-info">
+                        <small>By placing a bid, you agree to the terms and conditions.</small>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="auction-actions">
+                    <button class="action-btn" onclick="toggleWatchlist()">
+                        <span>❤️</span> Watch
+                    </button>
+                    <button class="action-btn" onclick="shareAuction()">
+                        <span>📤</span> Share
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bid History -->
+            <div class="bidding-container">
+                <h5>Bid History</h5>
+                <div id="bid-history" class="bid-history">
+                    <div class="bid-history-item">
+                        <div class="bid-amount">$100.00</div>
+                        <div class="bid-details">
+                            <span class="bidder">Starting Price</span>
+                            <span class="bid-time">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Last Bidder -->
+            <div class="bidding-container">
+                <h6>Current High Bidder</h6>
+                <div id="last-bidder">No bids yet</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Notifications Container -->
+<div id="notifications" class="notifications"></div>
+
+<script src="~/js/bidding.js"></script>
+<script>
+    // Sample auction data - in production, this would come from the server
+    const auctionData = {
+        id: 1,
+        title: "Sample Auction Item",
+        currentPrice: 100.00,
+        startingPrice: 100.00,
+        bidCount: 0,
+        endDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours from now
+        autoExtend: true,
+        autoExtendMinutes: 5
+    };
+
+    let currentBidderId = 1; // Sample bidder ID - in production, get from authentication
+
+    // Initialize the bidding client
+    async function initializeBidding() {
+        try {
+            await window.biddingClient.initialize();
+            await window.biddingClient.joinAuction(auctionData.id);
+
+            // Set up event handlers
+            window.biddingClient.onBidUpdate((bidUpdate) => {
+                console.log('Bid update received:', bidUpdate);
+            });
+
+            window.biddingClient.onCountdownUpdate((countdown) => {
+                console.log('Countdown update:', countdown);
+            });
+
+            window.biddingClient.onAuctionEnding((notification) => {
+                console.log('Auction ending:', notification);
+            });
+
+            window.biddingClient.onAuctionEnded((result) => {
+                console.log('Auction ended:', result);
+            });
+
+            // Show auto-extend indicator if enabled
+            if (auctionData.autoExtend) {
+                document.querySelector('.auto-extend-indicator').style.display = 'block';
+            }
+
+            // Start countdown timer
+            updateCountdownTimer();
+            setInterval(updateCountdownTimer, 1000);
+
+        } catch (error) {
+            console.error('Failed to initialize bidding:', error);
+            window.biddingClient.showNotification('Failed to connect to real-time bidding. Please refresh the page.', 'error');
+        }
+    }
+
+    // Place a bid
+    async function placeBid() {
+        const bidAmount = parseFloat(document.getElementById('bid-amount').value);
+        const button = document.getElementById('place-bid-btn');
+
+        if (!bidAmount || bidAmount <= 0) {
+            window.biddingClient.showNotification('Please enter a valid bid amount', 'error');
+            return;
+        }
+
+        try {
+            button.disabled = true;
+            button.textContent = 'Placing Bid...';
+
+            const result = await window.biddingClient.placeBid(auctionData.id, bidAmount, currentBidderId);
+            
+            if (result.status === 0) { // Success
+                window.biddingClient.showNotification('Bid placed successfully!', 'success');
+                // Update next minimum bid
+                const nextMinBid = await window.biddingClient.getNextMinimumBid(auctionData.id);
+                document.getElementById('next-min-bid').textContent = nextMinBid.toFixed(2);
+                document.getElementById('bid-amount').value = nextMinBid.toFixed(2);
+                document.getElementById('bid-amount').min = nextMinBid;
+            } else {
+                window.biddingClient.showNotification(result.message, 'error');
+            }
+        } catch (error) {
+            window.biddingClient.showNotification('Failed to place bid. Please try again.', 'error');
+        } finally {
+            button.disabled = false;
+            button.textContent = 'Place Bid';
+        }
+    }
+
+    // Set quick bid amount
+    function setQuickBid(increment) {
+        const currentAmount = parseFloat(document.getElementById('next-min-bid').textContent);
+        const newAmount = currentAmount + increment;
+        document.getElementById('bid-amount').value = newAmount.toFixed(2);
+    }
+
+    // Update countdown timer
+    function updateCountdownTimer() {
+        const now = new Date();
+        const endTime = new Date(auctionData.endDate);
+        const timeRemaining = endTime - now;
+
+        if (timeRemaining <= 0) {
+            document.getElementById('auction-timer').textContent = 'ENDED';
+            document.getElementById('auction-timer').classList.add('ended');
+            document.getElementById('place-bid-btn').disabled = true;
+            document.getElementById('place-bid-btn').textContent = 'Auction Ended';
+            return;
+        }
+
+        const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+        let timeString = '';
+        if (days > 0) {
+            timeString = `${days}d ${hours}h ${minutes}m`;
+        } else if (hours > 0) {
+            timeString = `${hours}h ${minutes}m ${seconds}s`;
+        } else {
+            timeString = `${minutes}m ${seconds}s`;
+        }
+
+        document.getElementById('auction-timer').textContent = timeString;
+
+        // Add ending soon styling
+        if (timeRemaining <= 15 * 60 * 1000) { // 15 minutes
+            document.getElementById('auction-timer').classList.add('ending-soon');
+        }
+    }
+
+    // Toggle watchlist
+    function toggleWatchlist() {
+        // Implementation for watchlist functionality
+        window.biddingClient.showNotification('Added to watchlist!', 'success');
+    }
+
+    // Share auction
+    function shareAuction() {
+        if (navigator.share) {
+            navigator.share({
+                title: auctionData.title,
+                url: window.location.href
+            });
+        } else {
+            // Fallback: copy to clipboard
+            navigator.clipboard.writeText(window.location.href);
+            window.biddingClient.showNotification('Link copied to clipboard!', 'success');
+        }
+    }
+
+    // Initialize everything when page loads
+    document.addEventListener('DOMContentLoaded', initializeBidding);
+
+    // Clean up when leaving page
+    window.addEventListener('beforeunload', () => {
+        if (window.biddingClient.currentAuctionId) {
+            window.biddingClient.leaveAuction(window.biddingClient.currentAuctionId);
+        }
+    });
+</script>

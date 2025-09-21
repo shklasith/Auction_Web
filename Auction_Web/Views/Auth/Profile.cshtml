@@ -1,0 +1,160 @@
+@model Auction_Web.Models.DTOs.UserProfileDto
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    @if (!string.IsNullOrEmpty(Model.ProfileImage))
+                    {
+                        <img src="@Model.ProfileImage" class="rounded-circle mb-3" width="150" height="150" alt="Profile Picture" />
+                    }
+                    else
+                    {
+                        <div class="bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 150px; height: 150px;">
+                            <i class="fas fa-user fa-3x text-white"></i>
+                        </div>
+                    }
+                    <h4>@Model.FullName</h4>
+                    <p class="text-muted">@Model.Username</p>
+                    <span class="badge bg-@(Model.Role == UserRole.Administrator ? "danger" : Model.Role == UserRole.Seller ? "success" : "primary")">
+                        @Model.Role
+                    </span>
+                    
+                    <div class="mt-3">
+                        <div class="row text-center">
+                            <div class="col">
+                                <h6>Rating</h6>
+                                <span class="text-warning">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <i class="fas fa-star@(i <= Model.Rating ? "" : "-o")"></i>
+                                    }
+                                </span>
+                                <small class="d-block">(@Model.Rating.ToString("F1"))</small>
+                            </div>
+                            <div class="col">
+                                <h6>Sales</h6>
+                                <strong>@Model.TotalSales</strong>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            Member since @Model.CreatedDate.ToString("MMMM yyyy")
+                        </small>
+                        @if (Model.LastLoginDate.HasValue)
+                        {
+                            <br />
+                            <small class="text-muted">
+                                Last login: @Model.LastLoginDate.Value.ToString("MMM dd, yyyy")
+                            </small>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#profile-info">Profile Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#edit-profile">Edit Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#change-password">Change Password</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="card-body">
+                    <div class="tab-content">
+                        <!-- Profile Information Tab -->
+                        <div class="tab-pane fade show active" id="profile-info">
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Email:</strong></div>
+                                <div class="col-sm-8">@Model.Email</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Phone:</strong></div>
+                                <div class="col-sm-8">@(Model.PhoneNumber ?? "Not provided")</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Address:</strong></div>
+                                <div class="col-sm-8">@(Model.Address ?? "Not provided")</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Account Type:</strong></div>
+                                <div class="col-sm-8">@Model.Role</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Edit Profile Tab -->
+                        <div class="tab-pane fade" id="edit-profile">
+                            <form asp-controller="Auth" asp-action="UpdateProfile" method="post" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label for="FullName" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" name="FullName" value="@Model.FullName" required />
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="Email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" name="Email" value="@Model.Email" required />
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="PhoneNumber" class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" name="PhoneNumber" value="@Model.PhoneNumber" />
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="Address" class="form-label">Address</label>
+                                    <textarea class="form-control" name="Address" rows="3">@Model.Address</textarea>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="ProfileImage" class="form-label">Profile Image</label>
+                                    <input type="file" class="form-control" name="ProfileImage" accept="image/*" />
+                                    <small class="form-text text-muted">Choose a new profile image (optional)</small>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">Update Profile</button>
+                            </form>
+                        </div>
+                        
+                        <!-- Change Password Tab -->
+                        <div class="tab-pane fade" id="change-password">
+                            <form asp-controller="Auth" asp-action="ChangePassword" method="post">
+                                <div class="mb-3">
+                                    <label for="CurrentPassword" class="form-label">Current Password</label>
+                                    <input type="password" class="form-control" name="CurrentPassword" required />
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="NewPassword" class="form-label">New Password</label>
+                                    <input type="password" class="form-control" name="NewPassword" required />
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="ConfirmNewPassword" class="form-label">Confirm New Password</label>
+                                    <input type="password" class="form-control" name="ConfirmNewPassword" required />
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">Change Password</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
