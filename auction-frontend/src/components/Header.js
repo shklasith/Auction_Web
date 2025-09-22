@@ -14,73 +14,77 @@ const Header = () => {
   };
 
   return (
-    <Navbar bg="primary" variant="dark" expand="lg" className="shadow-sm">
-      <Container>
-        <Navbar.Brand as={Link} to="/" className="fw-bold">
+    <Navbar bg="primary" variant="dark" expand="lg" className="shadow-sm navbar-custom" fixed="top">
+      <Container fluid className="px-3 px-lg-4">
+        <Navbar.Brand as={Link} to="/" className="fw-bold d-flex align-items-center navbar-brand-custom">
           <i className="fas fa-gavel me-2"></i>
-          AuctionHub
+          <span>AuctionHub</span>
         </Navbar.Brand>
         
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle aria-controls="basic-navbar-nav" className="border-0" />
         
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link as={Link} to="/">
-              <i className="fas fa-home me-1"></i>Home
+          <Nav className="me-auto align-items-lg-center">
+            <Nav.Link as={Link} to="/" className="nav-link-custom">
+              <i className="fas fa-home me-1"></i>
+              <span>Home</span>
             </Nav.Link>
-            <Nav.Link as={Link} to="/auctions">
-              <i className="fas fa-list me-1"></i>All Auctions
+            <Nav.Link as={Link} to="/auctions" className="nav-link-custom">
+              <i className="fas fa-list me-1"></i>
+              <span>All Auctions</span>
             </Nav.Link>
-            <Nav.Link as={Link} to="/create-auction">
-              <i className="fas fa-plus me-1"></i>Sell Item
+            <Nav.Link as={Link} to="/create-auction" className="nav-link-custom">
+              <i className="fas fa-plus me-1"></i>
+              <span>Sell Item</span>
             </Nav.Link>
           </Nav>
           
-          <Form className="d-flex me-3" onSubmit={handleSearch}>
-            <Form.Control
-              type="search"
-              placeholder="Search auctions..."
-              className="me-2"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              style={{ width: '300px' }}
-            />
-            <Button variant="outline-light" type="submit">
-              <i className="fas fa-search"></i>
-            </Button>
-          </Form>
-          
-          <Nav>
-            <Nav.Link as={Link} to="/watchlist" className="position-relative">
-              <i className="fas fa-heart me-1"></i>
-              Watchlist
-              <Badge bg="danger" className="position-absolute top-0 start-100 translate-middle">
-                3
-              </Badge>
-            </Nav.Link>
+          <div className="d-flex align-items-center flex-column flex-lg-row gap-2 gap-lg-3">
+            <Form className="d-flex search-form-custom" onSubmit={handleSearch}>
+              <Form.Control
+                type="search"
+                placeholder="Search auctions..."
+                className="search-input-custom"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <Button variant="outline-light" type="submit" className="search-btn-custom">
+                <i className="fas fa-search"></i>
+              </Button>
+            </Form>
             
-            <Dropdown>
-              <Dropdown.Toggle variant="outline-light" id="dropdown-basic">
-                <i className="fas fa-user me-1"></i>
-                Account
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item as={Link} to="/profile">
-                  <i className="fas fa-user-circle me-2"></i>My Profile
-                </Dropdown.Item>
-                <Dropdown.Item as={Link} to="/my-auctions">
-                  <i className="fas fa-gavel me-2"></i>My Auctions
-                </Dropdown.Item>
-                <Dropdown.Item as={Link} to="/my-bids">
-                  <i className="fas fa-hand-paper me-2"></i>My Bids
-                </Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item href="#logout">
-                  <i className="fas fa-sign-out-alt me-2"></i>Logout
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </Nav>
+            <div className="d-flex align-items-center gap-2">
+              <Nav.Link as={Link} to="/watchlist" className="position-relative nav-link-custom watchlist-nav-item">
+                <i className="fas fa-heart me-1"></i>
+                <span>Watchlist</span>
+                <Badge bg="danger" className="position-absolute notification-badge">
+                  3
+                </Badge>
+              </Nav.Link>
+              
+              <Dropdown align="end">
+                <Dropdown.Toggle variant="outline-light" id="dropdown-basic" className="dropdown-toggle-custom">
+                  <i className="fas fa-user me-1"></i>
+                  <span>Account</span>
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="dropdown-menu-custom">
+                  <Dropdown.Item as={Link} to="/profile" className="dropdown-item-custom">
+                    <i className="fas fa-user-circle me-2"></i>My Profile
+                  </Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/my-auctions" className="dropdown-item-custom">
+                    <i className="fas fa-gavel me-2"></i>My Auctions
+                  </Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/my-bids" className="dropdown-item-custom">
+                    <i className="fas fa-hand-paper me-2"></i>My Bids
+                  </Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item href="#logout" className="dropdown-item-custom">
+                    <i className="fas fa-sign-out-alt me-2"></i>Logout
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
+          </div>
         </Navbar.Collapse>
       </Container>
     </Navbar>

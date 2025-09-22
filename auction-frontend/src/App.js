@@ -13,6 +13,7 @@ import AuctionDetail from './pages/AuctionDetail';
 import CreateAuction from './pages/CreateAuction';
 import Profile from './pages/Profile';
 import Watchlist from './pages/Watchlist';
+import CategoryPage from './pages/CategoryPage';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/create-auction" element={<CreateAuction />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/watchlist" element={<Watchlist />} />
+            <Route path="/category/:category" element={<CategoryPage />} />
           </Routes>
         </main>
         <Footer />
