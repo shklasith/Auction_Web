@@ -222,3 +222,5 @@
 /Users/kaveeshalasith/Downloads/Auction_Web/Auction_Web/bin/Debug/net9.0/runtimes/win-x64/native/e_sqlite3.dll
 /Users/kaveeshalasith/Downloads/Auction_Web/Auction_Web/bin/Debug/net9.0/runtimes/win-x86/native/e_sqlite3.dll
 /Users/kaveeshalasith/Downloads/Auction_Web/Auction_Web/obj/Debug/net9.0/Auction_Web.sourcelink.json
+/Users/kaveeshalasith/Downloads/Auction_Web/Auction_Web/bin/Debug/net9.0/MySqlConnector.dll
+/Users/kaveeshalasith/Downloads/Auction_Web/Auction_Web/bin/Debug/net9.0/Pomelo.EntityFrameworkCore.MySql.dll

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Ml+qLXrQ0K8=",
+  "dgSpecHash": "VBOwKf4jmxs=",
   "success": true,
   "projectFilePath": "/Users/kaveeshalasith/Downloads/Auction_Web/Auction_Web/Auction_Web.csproj",
   "expectedPackageFiles": [
@@ -72,7 +72,9 @@
     "/Users/kaveeshalasith/.nuget/packages/microsoft.netcore.platforms/2.0.0/microsoft.netcore.platforms.2.0.0.nupkg.sha512",
     "/Users/kaveeshalasith/.nuget/packages/microsoft.netcore.targets/1.1.0/microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "/Users/kaveeshalasith/.nuget/packages/mono.texttemplating/3.0.0/mono.texttemplating.3.0.0.nupkg.sha512",
+    "/Users/kaveeshalasith/.nuget/packages/mysqlconnector/2.4.0/mysqlconnector.2.4.0.nupkg.sha512",
     "/Users/kaveeshalasith/.nuget/packages/newtonsoft.json/11.0.2/newtonsoft.json.11.0.2.nupkg.sha512",
+    "/Users/kaveeshalasith/.nuget/packages/pomelo.entityframeworkcore.mysql/9.0.0/pomelo.entityframeworkcore.mysql.9.0.0.nupkg.sha512",
     "/Users/kaveeshalasith/.nuget/packages/sqlitepclraw.bundle_e_sqlite3/2.1.10/sqlitepclraw.bundle_e_sqlite3.2.1.10.nupkg.sha512",
     "/Users/kaveeshalasith/.nuget/packages/sqlitepclraw.core/2.1.10/sqlitepclraw.core.2.1.10.nupkg.sha512",
     "/Users/kaveeshalasith/.nuget/packages/sqlitepclraw.lib.e_sqlite3/2.1.10/sqlitepclraw.lib.e_sqlite3.2.1.10.nupkg.sha512",
