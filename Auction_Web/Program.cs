@@ -86,9 +86,9 @@ builder.Services.AddCors(options =>
         });
 });
 
-// Add hosted services for auction management
-builder.Services.AddHostedService<AuctionStatusUpdateService>();
-builder.Services.AddHostedService<AuctionTimerService>();
+// Add hosted services for auction management - Temporarily disabled for startup
+// builder.Services.AddHostedService<AuctionStatusUpdateService>();
+// builder.Services.AddHostedService<AuctionTimerService>();
 
 var app = builder.Build();
 

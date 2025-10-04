@@ -5323,11 +5323,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/kaveeshalasith/Downloads/Auction_Web/Auction_Web/Auction_Web.csproj",
+      "projectUniqueName": "/Users/kaveeshalasith/Downloads/untitled folder 11/Auction_Web/Auction_Web.csproj",
       "projectName": "Auction_Web",
-      "projectPath": "/Users/kaveeshalasith/Downloads/Auction_Web/Auction_Web/Auction_Web.csproj",
+      "projectPath": "/Users/kaveeshalasith/Downloads/untitled folder 11/Auction_Web/Auction_Web.csproj",
       "packagesPath": "/Users/kaveeshalasith/.nuget/packages/",
-      "outputPath": "/Users/kaveeshalasith/Downloads/Auction_Web/Auction_Web/obj/",
+      "outputPath": "/Users/kaveeshalasith/Downloads/untitled folder 11/Auction_Web/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/kaveeshalasith/.nuget/NuGet/NuGet.Config"

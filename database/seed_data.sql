@@ -134,20 +134,173 @@ INSERT INTO AspNetUsers (
 
 -- Sample Demo Auctions (for testing purposes)
 INSERT INTO Auctions (
-    Title, Description, StartingPrice, CurrentPrice, StartDate, EndDate,
-    Category, ItemCondition, SellerId, Status, IsActive
+    Title, Description, DetailedDescription, StartingPrice, CurrentPrice, BuyNowPrice, ReservePrice,
+    StartDate, EndDate, Category, SubCategory, Condition, ConditionNotes,
+    SellerId, Status, Type, IsActive, IsFeatured, Brand, Model, Color, Size,
+    ShippingCost, FreeShipping, ItemLocation, BidIncrement, AutoExtend, AutoExtendMinutes, Tags
 ) VALUES
-('Vintage iPhone 12 Pro Max', 'Excellent condition iPhone 12 Pro Max in original packaging', 
- 499.99, 499.99, DATE_ADD(NOW(), INTERVAL 1 HOUR), DATE_ADD(NOW(), INTERVAL 7 DAY),
- 'Electronics', 'Excellent', @AdminId, 'Scheduled', TRUE),
 
-('Rare Baseball Card Collection', 'Collection of rare baseball cards from the 1980s', 
- 99.99, 99.99, DATE_ADD(NOW(), INTERVAL 2 HOUR), DATE_ADD(NOW(), INTERVAL 5 DAY),
- 'Collectibles', 'Very Good', @AdminId, 'Scheduled', TRUE),
+-- Electronics Category
+('MacBook Pro 16" M3 Max - Space Black', 
+ 'Latest MacBook Pro with M3 Max chip, 36GB RAM, 1TB SSD. Perfect for professionals and creatives.',
+ 'This MacBook Pro features the revolutionary M3 Max chip with 14-core CPU and 30-core GPU. Includes original box, charger, and documentation. No scratches or dents. AppleCare+ included until 2026. Perfect for video editing, 3D rendering, and software development.',
+ 2299.99, 2299.99, 2899.99, 2500.00,
+ DATE_ADD(NOW(), INTERVAL 1 HOUR), DATE_ADD(NOW(), INTERVAL 7 DAY),
+ 'Electronics', 'Laptops & Computers', 'Excellent', 'Like new, minimal usage',
+ @AdminId, 'Scheduled', 'Reserve', TRUE, TRUE, 'Apple', 'MacBook Pro 16"', 'Space Black', '16-inch',
+ 0.00, TRUE, 'San Francisco, CA', 50.00, TRUE, 5, 'laptop,apple,macbook,m3,professional'),
 
-('Designer Handbag', 'Authentic Louis Vuitton handbag in perfect condition', 
- 299.99, 299.99, DATE_ADD(NOW(), INTERVAL 30 MINUTE), DATE_ADD(NOW(), INTERVAL 3 DAY),
- 'Fashion', 'Like New', @AdminId, 'Scheduled', TRUE);
+('Sony PlayStation 5 Digital Edition Bundle',
+ 'PS5 Digital with extra controller, charging station, and 5 games including Spider-Man 2.',
+ 'Barely used PlayStation 5 Digital Edition purchased 3 months ago. Includes: Console, 2 DualSense controllers, charging station, headset, and games: Spider-Man 2, God of War Ragnarök, Horizon Forbidden West, Gran Turismo 7, and The Last of Us Part I. All original packaging included.',
+ 399.99, 399.99, 649.99, NULL,
+ DATE_ADD(NOW(), INTERVAL 30 MINUTE), DATE_ADD(NOW(), INTERVAL 5 DAY),
+ 'Electronics', 'Gaming Consoles', 'Very Good', 'Excellent working condition, minor shelf wear',
+ @AdminId, 'Scheduled', 'BuyItNow', TRUE, TRUE, 'Sony', 'PlayStation 5', 'White', 'Standard',
+ 25.00, FALSE, 'Los Angeles, CA', 25.00, TRUE, 5, 'ps5,playstation,gaming,console,bundle'),
+
+('Vintage Canon AE-1 35mm Film Camera',
+ 'Classic 1970s film camera with 50mm lens. Perfect working condition, recently serviced.',
+ 'This iconic Canon AE-1 from 1978 is in exceptional condition. Recently professionally cleaned and calibrated. Includes original 50mm f/1.4 lens, camera bag, manual, and fresh battery. Light meter works perfectly. A few minor cosmetic marks consistent with age but fully functional.',
+ 149.99, 149.99, NULL, NULL,
+ DATE_ADD(NOW(), INTERVAL 2 HOUR), DATE_ADD(NOW(), INTERVAL 6 DAY),
+ 'Electronics', 'Cameras & Photography', 'Good', 'Vintage item, professionally serviced',
+ @AdminId, 'Scheduled', 'Standard', TRUE, FALSE, 'Canon', 'AE-1', 'Black', 'Standard',
+ 15.00, FALSE, 'Portland, OR', 10.00, FALSE, 0, 'canon,vintage,film,camera,photography'),
+
+-- Collectibles Category
+('1952 Mickey Mantle Topps Rookie Card PSA 8',
+ 'Professionally graded Mickey Mantle rookie card in Near Mint condition. Investment grade collectible.',
+ 'This is the holy grail of baseball cards - the 1952 Topps Mickey Mantle rookie card #311. Professionally graded by PSA as Near Mint 8, which is exceptional for this card. Sharp corners, good centering, minimal wear. Certificate of authenticity included. This card has consistently appreciated in value and is considered one of the best sports investments.',
+ 15000.00, 15000.00, 22000.00, 18000.00,
+ DATE_ADD(NOW(), INTERVAL 4 HOUR), DATE_ADD(NOW(), INTERVAL 10 DAY),
+ 'Collectibles', 'Trading Cards', 'Excellent', 'PSA 8 graded, authenticated',
+ @AdminId, 'Scheduled', 'Reserve', TRUE, TRUE, 'Topps', '1952 #311', 'Color', 'Standard',
+ 50.00, FALSE, 'New York, NY', 500.00, TRUE, 10, 'mantle,rookie,baseball,psa,investment'),
+
+('Pokémon Charizard Base Set 1st Edition Shadowless',
+ 'Mint condition Charizard from original Base Set. Unplayed, pack fresh condition.',
+ 'The most iconic Pokémon card ever printed. This Charizard is from the 1998 Base Set 1st Edition Shadowless print run. Card has been stored in protective sleeve since opening. No scratches, edge wear, or whitening. Colors are vibrant. A true gem for any collector.',
+ 2499.99, 2499.99, 3500.00, NULL,
+ DATE_ADD(NOW(), INTERVAL 3 HOUR), DATE_ADD(NOW(), INTERVAL 8 DAY),
+ 'Collectibles', 'Trading Cards', 'Mint', 'Pack fresh, never played',
+ @AdminId, 'Scheduled', 'BuyItNow', TRUE, TRUE, 'Wizards of the Coast', 'Base Set 4/102', 'Holo', 'Standard',
+ 20.00, FALSE, 'Seattle, WA', 100.00, TRUE, 5, 'pokemon,charizard,base set,mint,1st edition'),
+
+('Star Wars Original Trilogy Action Figures - Complete Set',
+ 'Complete set of original Kenner Star Wars figures from 1977-1985. All with original accessories.',
+ 'Incredible complete collection of 96 original Kenner Star Wars action figures spanning A New Hope, Empire Strikes Back, and Return of the Jedi. All figures include original weapons and accessories where applicable. Condition ranges from Good to Excellent. Includes rare figures like Yak Face and Blue Snaggletooth. Display cases included.',
+ 1899.99, 1899.99, 2800.00, 2200.00,
+ DATE_ADD(NOW(), INTERVAL 6 HOUR), DATE_ADD(NOW(), INTERVAL 9 DAY),
+ 'Collectibles', 'Vintage Toys', 'Very Good', 'Complete collection, various conditions',
+ @AdminId, 'Scheduled', 'Reserve', TRUE, FALSE, 'Kenner', 'Original Trilogy', 'Various', 'Various',
+ 35.00, FALSE, 'Chicago, IL', 75.00, TRUE, 5, 'starwars,kenner,vintage,complete,collection'),
+
+-- Fashion Category
+('Hermès Birkin 35 Togo Leather Handbag',
+ 'Authentic Hermès Birkin in Étoupe Togo leather with palladium hardware. Pristine condition.',
+ 'This stunning Birkin 35 in Étoupe (taupe gray) Togo leather is a timeless classic. Purchased from Hermès boutique in Paris in 2022. Includes dustbag, box, ribbon, care booklet, and authenticity card. No scratches on hardware, leather is supple and unblemished. A true investment piece that holds its value exceptionally well.',
+ 8999.99, 8999.99, 12500.00, 10500.00,
+ DATE_ADD(NOW(), INTERVAL 5 HOUR), DATE_ADD(NOW(), INTERVAL 12 DAY),
+ 'Fashion', 'Handbags & Accessories', 'Excellent', 'Like new, stored in dust bag',
+ @AdminId, 'Scheduled', 'Reserve', TRUE, TRUE, 'Hermès', 'Birkin 35', 'Étoupe', '35cm',
+ 0.00, TRUE, 'Beverly Hills, CA', 250.00, TRUE, 10, 'hermes,birkin,luxury,authentic,investment'),
+
+('Vintage Levi\'s 501 Jeans - 1960s Big E',
+ 'Rare 1960s Levi\'s 501s with Big E red tab and single stitch construction. Size 32x32.',
+ 'These are authentic 1960s Levi\'s 501s featuring the coveted Big E red tab and single stitch back seam construction. Hidden rivets, no back pocket stitching, and original Levi\'s buttons. Some fading and wear consistent with age and use, but no holes or major damage. A true piece of American fashion history.',
+ 749.99, 749.99, NULL, NULL,
+ DATE_ADD(NOW(), INTERVAL 1 DAY), DATE_ADD(NOW(), INTERVAL 8 DAY),
+ 'Fashion', 'Vintage Fashion', 'Good', 'Authentic vintage wear, no holes',
+ @AdminId, 'Scheduled', 'Standard', TRUE, FALSE, 'Levi\'s', '501', 'Indigo', '32x32',
+ 12.00, FALSE, 'Austin, TX', 25.00, FALSE, 0, 'levis,vintage,big e,denim,collectible'),
+
+-- Art & Antiques
+('Original Oil Painting by Listed Artist - "Sunset Harbor"',
+ 'Beautiful seascape oil painting by renowned artist James Mitchell (1922-1998). Gallery framed.',
+ 'This stunning 24"x36" oil on canvas depicts a serene harbor at sunset. Painted by James Mitchell, whose works are held in several museum collections. The painting features his signature impressionistic style with masterful use of light and color. Recently restored and professionally framed. Includes certificate of authenticity and provenance documentation.',
+ 1299.99, 1299.99, 1899.00, NULL,
+ DATE_ADD(NOW(), INTERVAL 8 HOUR), DATE_ADD(NOW(), INTERVAL 14 DAY),
+ 'Art & Antiques', NULL, 'Excellent', 'Recently restored, museum quality',
+ @AdminId, 'Scheduled', 'BuyItNow', TRUE, TRUE, NULL, NULL, 'Multi-color', '24"x36"',
+ 45.00, FALSE, 'Boston, MA', 50.00, TRUE, 5, 'painting,oil,seascape,listed artist,original'),
+
+('Antique Victorian Mahogany Dining Table',
+ '1880s Victorian dining table in solid mahogany. Seats 8-10 people. Excellent condition.',
+ 'Magnificent Victorian dining table from approximately 1880. Solid mahogany construction with beautiful grain patterns. Pedestal base with carved details. Table measures 8 feet long and can comfortably seat 8-10 people. Recently professionally refinished. Minor age-appropriate wear but structurally sound and stunning.',
+ 899.99, 899.99, 1400.00, NULL,
+ DATE_ADD(NOW(), INTERVAL 12 HOUR), DATE_ADD(NOW(), INTERVAL 11 DAY),
+ 'Home & Garden', NULL, 'Very Good', 'Professionally refinished, minor age wear',
+ @AdminId, 'Scheduled', 'BuyItNow', TRUE, FALSE, NULL, NULL, 'Mahogany', '8 feet',
+ 150.00, FALSE, 'Philadelphia, PA', 40.00, FALSE, 0, 'victorian,mahogany,dining,antique,furniture'),
+
+-- Jewelry & Watches
+('Rolex Submariner Date 116610LN - Box & Papers',
+ 'Authentic Rolex Submariner with ceramic bezel. Purchased new in 2019. Complete set.',
+ 'This classic Rolex Submariner Date ref. 116610LN features the iconic black dial and black Cerachrom bezel. 40mm stainless steel case, automatic movement with 48-hour power reserve. Purchased from authorized dealer in 2019. Includes original box, papers, warranty card, and all links. Excellent condition with minimal wear.',
+ 7899.99, 7899.99, 9200.00, 8500.00,
+ DATE_ADD(NOW(), INTERVAL 2 DAY), DATE_ADD(NOW(), INTERVAL 15 DAY),
+ 'Jewelry & Watches', NULL, 'Excellent', 'Minimal wear, complete set',
+ @AdminId, 'Scheduled', 'Reserve', TRUE, TRUE, 'Rolex', 'Submariner 116610LN', 'Black', '40mm',
+ 0.00, TRUE, 'Miami, FL', 200.00, TRUE, 10, 'rolex,submariner,luxury,watch,authentic'),
+
+-- Automotive
+('1969 Ford Mustang Mach 1 - Numbers Matching',
+ 'Restored 1969 Mustang Mach 1 with 428 Cobra Jet engine. Numbers matching, show quality.',
+ 'Frame-off restoration completed in 2020. Original 428 Cobra Jet V8 engine with numbers matching transmission. New interior, paint, chrome, and weather stripping. Shaker hood scoop, Magnum 500 wheels. Runs and drives excellent. Extensive documentation of restoration process. Ready for car shows or weekend cruising.',
+ 45000.00, 45000.00, 65000.00, 52000.00,
+ DATE_ADD(NOW(), INTERVAL 3 DAY), DATE_ADD(NOW(), INTERVAL 21 DAY),
+ 'Automotive', NULL, 'Excellent', 'Frame-off restoration, show quality',
+ @AdminId, 'Scheduled', 'Reserve', TRUE, TRUE, 'Ford', 'Mustang Mach 1', 'Grabber Blue', 'Standard',
+ 500.00, FALSE, 'Detroit, MI', 1000.00, TRUE, 15, 'mustang,mach 1,cobra jet,restored,classic'),
+
+-- Books & Media
+('Harry Potter First Edition Book Set - Complete Series',
+ 'Complete first edition Harry Potter series including Philosopher\'s Stone first print.',
+ 'Extremely rare complete set of Harry Potter first editions including the coveted first print of Philosopher\'s Stone with the "1 wand" error on page 53. All books are first UK editions published by Bloomsbury. Dust jackets present on all books in very good condition. Books 1-3 show minimal shelf wear, later books are near fine.',
+ 12500.00, 12500.00, 18000.00, 15000.00,
+ DATE_ADD(NOW(), INTERVAL 10 HOUR), DATE_ADD(NOW(), INTERVAL 16 DAY),
+ 'Books & Media', NULL, 'Very Good', 'First editions, dust jackets present',
+ @AdminId, 'Scheduled', 'Reserve', TRUE, TRUE, 'Bloomsbury', 'Harry Potter Series', 'Various', 'Standard',
+ 25.00, FALSE, 'London, UK', 300.00, TRUE, 10, 'harry potter,first edition,bloomsbury,complete,rare'),
+
+-- Sports & Recreation
+('Tiger Woods Signed 2019 Masters Flag - PSA/DNA Authenticated',
+ 'Official Augusta National pin flag signed by Tiger Woods after his 2019 Masters victory.',
+ 'This official Augusta National pin flag was signed by Tiger Woods following his historic 2019 Masters Tournament victory - his first major championship in 11 years. The signature is authenticated by PSA/DNA with matching hologram and certificate. Flag is in pristine condition and professionally framed with UV-protective glass.',
+ 1299.99, 1299.99, 1899.00, NULL,
+ DATE_ADD(NOW(), INTERVAL 14 HOUR), DATE_ADD(NOW(), INTERVAL 13 DAY),
+ 'Sports & Recreation', NULL, 'Excellent', 'PSA/DNA authenticated, professionally framed',
+ @AdminId, 'Scheduled', 'BuyItNow', TRUE, FALSE, NULL, NULL, 'Green/White', 'Standard',
+ 30.00, FALSE, 'Augusta, GA', 50.00, TRUE, 5, 'tiger woods,masters,signed,authenticated,golf'),
+
+-- Industrial & Business
+('Commercial Espresso Machine - La Marzocco Linea PB',
+ 'Professional 2-group espresso machine. Excellent condition, regularly serviced.',
+ 'La Marzocco Linea PB 2-group commercial espresso machine used in upscale café for 2 years. Dual boilers, PID temperature control, pre-infusion system. Recently serviced with new seals and calibration. Produces consistently excellent espresso. Perfect for serious coffee shop or high-end restaurant.',
+ 4999.99, 4999.99, 7200.00, NULL,
+ DATE_ADD(NOW(), INTERVAL 18 HOUR), DATE_ADD(NOW(), INTERVAL 17 DAY),
+ 'Industrial & Business', NULL, 'Very Good', 'Recently serviced, café used',
+ @AdminId, 'Scheduled', 'BuyItNow', TRUE, FALSE, 'La Marzocco', 'Linea PB', 'Stainless Steel', '2-Group',
+ 200.00, FALSE, 'San Francisco, CA', 150.00, FALSE, 0, 'espresso,commercial,la marzocco,café,professional');
+
+-- Add some sample auction images
+INSERT INTO AuctionImages (AuctionId, ImageUrl, IsPrimary, DisplayOrder, Caption, UploadedBy, UploadedDate) 
+SELECT Id, 
+       CASE 
+           WHEN Title LIKE '%MacBook%' THEN 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=800'
+           WHEN Title LIKE '%PlayStation%' THEN 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=800'
+           WHEN Title LIKE '%Canon%' THEN 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800'
+           WHEN Title LIKE '%Mantle%' THEN 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800'
+           WHEN Title LIKE '%Charizard%' THEN 'https://images.unsplash.com/photo-1613963761787-fbc2135e5b3b?w=800'
+           WHEN Title LIKE '%Hermès%' THEN 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800'
+           WHEN Title LIKE '%Rolex%' THEN 'https://images.unsplash.com/photo-1523170335258-f5c6c6bd6eaf?w=800'
+           WHEN Title LIKE '%Mustang%' THEN 'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=800'
+           ELSE 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800'
+       END,
+       TRUE, 1, 'Primary product image', @AdminId, CURRENT_TIMESTAMP(6)
+FROM Auctions 
+WHERE SellerId = @AdminId;
 
 -- =============================================
 -- INDEXES FOR PERFORMANCE OPTIMIZATION

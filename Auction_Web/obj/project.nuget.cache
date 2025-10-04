@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "VBOwKf4jmxs=",
+  "dgSpecHash": "WaE2HjRezTk=",
   "success": true,
-  "projectFilePath": "/Users/kaveeshalasith/Downloads/Auction_Web/Auction_Web/Auction_Web.csproj",
+  "projectFilePath": "/Users/kaveeshalasith/Downloads/untitled folder 11/Auction_Web/Auction_Web.csproj",
   "expectedPackageFiles": [
     "/Users/kaveeshalasith/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/kaveeshalasith/.nuget/packages/microsoft.aspnetcore.authentication.abstractions/2.2.0/microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
