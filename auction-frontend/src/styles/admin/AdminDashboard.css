@@ -1,0 +1,164 @@
+.admin-dashboard {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.admin-dashboard h2 {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Statistics Cards */
+.stat-card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card .stat-icon {
+  opacity: 0.3;
+  font-size: 2rem;
+}
+
+.stat-card h3 {
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.stat-card small {
+  opacity: 0.9;
+}
+
+/* User Stats */
+.user-stats .stat-item {
+  padding: 0.75rem;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.user-stats .stat-item:hover {
+  background-color: #f8f9fa;
+}
+
+/* System Health */
+.system-health .health-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.system-health .health-item:last-child {
+  border-bottom: none;
+}
+
+/* Activity List */
+.activity-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.activity-item {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.activity-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Cards */
+.admin-dashboard .card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1rem;
+}
+
+.admin-dashboard .card-header {
+  background-color: #fff;
+  border-bottom: 2px solid #f8f9fa;
+  padding: 1rem 1.25rem;
+  border-radius: 10px 10px 0 0 !important;
+}
+
+.admin-dashboard .card-header h5 {
+  margin-bottom: 0;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Table Styling */
+.admin-dashboard .table {
+  margin-bottom: 0;
+}
+
+.admin-dashboard .table thead th {
+  border-top: none;
+  font-weight: 600;
+  color: #6c757d;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-dashboard .table tbody tr {
+  transition: background-color 0.2s;
+}
+
+.admin-dashboard .table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Quick Actions */
+.admin-dashboard .btn-outline-primary,
+.admin-dashboard .btn-outline-success,
+.admin-dashboard .btn-outline-info,
+.admin-dashboard .btn-outline-warning {
+  border-width: 2px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stat-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .stat-card .stat-icon {
+    font-size: 1.5rem;
+  }
+
+  .activity-list {
+    max-height: 300px;
+  }
+}
+
+/* Loading Spinner */
+.admin-dashboard .spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Badge Styling */
+.admin-dashboard .badge {
+  padding: 0.35em 0.65em;
+  font-weight: 500;
+}
+

@@ -1,0 +1,220 @@
+.admin-profile {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.admin-profile h2 {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Profile Sidebar */
+.profile-sidebar {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.profile-image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 5px solid #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-badge {
+  position: absolute;
+  bottom: 10px;
+  right: -10px;
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.profile-stats .stat-box {
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  transition: all 0.3s;
+}
+
+.profile-stats .stat-box:hover {
+  background-color: #e9ecef;
+  transform: translateY(-2px);
+}
+
+.profile-stats h5 {
+  color: #2c3e50;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.profile-info {
+  text-align: left;
+  padding-top: 1rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.profile-info p {
+  display: flex;
+  align-items: center;
+}
+
+/* Tabs */
+.admin-profile .nav-tabs {
+  border-bottom: 2px solid #e9ecef;
+}
+
+.admin-profile .nav-tabs .nav-link {
+  color: #6c757d;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.admin-profile .nav-tabs .nav-link:hover {
+  border-color: transparent;
+  color: #0d6efd;
+}
+
+.admin-profile .nav-tabs .nav-link.active {
+  color: #0d6efd;
+  background-color: transparent;
+  border-color: transparent transparent #0d6efd;
+}
+
+/* Stat Cards Small */
+.stat-card-small {
+  border: none;
+  border-radius: 10px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stat-card-small:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card-small h3 {
+  color: #0d6efd;
+  font-weight: 700;
+}
+
+/* Form Styling */
+.admin-profile .form-label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+.admin-profile .form-control {
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
+  padding: 0.75rem;
+  transition: all 0.3s;
+}
+
+.admin-profile .form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.1);
+}
+
+/* Table Styling */
+.admin-profile .table {
+  margin-bottom: 0;
+}
+
+.admin-profile .table thead th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  font-weight: 600;
+  color: #495057;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: 0.5px;
+}
+
+.admin-profile .table tbody tr {
+  transition: background-color 0.2s;
+}
+
+.admin-profile .table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Security Section */
+.security-info {
+  padding: 1rem;
+}
+
+.security-info .btn {
+  margin-bottom: 0.5rem;
+}
+
+/* Buttons */
+.admin-profile .btn {
+  border-radius: 8px;
+  padding: 0.6rem 1.5rem;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.admin-profile .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Card Styling */
+.admin-profile .card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+}
+
+.admin-profile .card-body {
+  padding: 1.5rem;
+}
+
+/* Badges */
+.admin-profile .badge {
+  padding: 0.4em 0.8em;
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .profile-sidebar {
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-image {
+    width: 120px;
+    height: 120px;
+  }
+
+  .profile-stats .stat-box h5 {
+    font-size: 1.25rem;
+  }
+}
+
+/* Loading Spinner */
+.admin-profile .spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Alert Styling */
+.admin-profile .alert {
+  border-radius: 10px;
+  border: none;
+}
+

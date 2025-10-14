@@ -25,6 +25,9 @@ namespace Auction_Web.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<SystemSetting> SystemSettings { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
+        
+        // Admin tables
+        public DbSet<AdminActivityLog> AdminActivityLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -297,6 +300,21 @@ namespace Auction_Web.Data
                     
                 entity.HasIndex(e => e.UserId);
                 entity.HasIndex(e => e.EntityType);
+                entity.HasIndex(e => e.Timestamp);
+            });
+
+            // Configure AdminActivityLog entity
+            builder.Entity<AdminActivityLog>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                
+                entity.HasOne(e => e.Admin)
+                    .WithMany()
+                    .HasForeignKey(e => e.AdminId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                    
+                entity.HasIndex(e => e.AdminId);
+                entity.HasIndex(e => e.Action);
                 entity.HasIndex(e => e.Timestamp);
             });
         }

@@ -15,12 +15,18 @@ namespace Auction_Web.Controllers
         private readonly IAuthService _authService;
         private readonly UserManager<User> _userManager;
         private readonly ApplicationDbContext _context;
+        private readonly IAdminService _adminService;
 
-        public AdminController(IAuthService authService, UserManager<User> userManager, ApplicationDbContext context)
+        public AdminController(
+            IAuthService authService, 
+            UserManager<User> userManager, 
+            ApplicationDbContext context,
+            IAdminService adminService)
         {
             _authService = authService;
             _userManager = userManager;
             _context = context;
+            _adminService = adminService;
         }
 
         public async Task<IActionResult> Users(int page = 1, int pageSize = 20, string searchTerm = "", UserRole? role = null)
@@ -125,42 +131,71 @@ namespace Auction_Web.Controllers
             return Json(new { success = result, message = message, isActive = !user.IsActive });
         }
 
+        // Admin Profile Management
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var adminId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(adminId))
+            {
+                return Unauthorized();
+            }
+
+            var profile = await _adminService.GetAdminProfileAsync(adminId);
+            if (profile == null)
+            {
+                return NotFound();
+            }
+
+            return View(profile);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProfile([FromForm] Models.DTOs.UpdateProfileDto model)
+        {
+            var adminId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(adminId))
+            {
+                return Json(new { success = false, message = "Unauthorized" });
+            }
+
+            var result = await _adminService.UpdateAdminProfileAsync(adminId, model);
+            
+            return Json(new { success = result, message = result ? "Profile updated successfully" : "Failed to update profile" });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ActivityLog(int days = 30)
+        {
+            var adminId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(adminId))
+            {
+                return Unauthorized();
+            }
+
+            var activities = await _adminService.GetActivityLogAsync(adminId, days);
+            return Json(activities);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Statistics()
+        {
+            var stats = await _adminService.GetStatisticsAsync();
+            return Json(stats);
+        }
+
+        // Dashboard
+        [HttpGet]
         public async Task<IActionResult> Dashboard()
         {
-            var totalUsers = await _userManager.Users.CountAsync();
-            var totalBuyers = await _userManager.Users.CountAsync(u => u.Role == UserRole.Buyer);
-            var totalSellers = await _userManager.Users.CountAsync(u => u.Role == UserRole.Seller);
-            var totalAdmins = await _userManager.Users.CountAsync(u => u.Role == UserRole.Administrator);
-            var activeUsers = await _userManager.Users.CountAsync(u => u.IsActive);
-            var inactiveUsers = await _userManager.Users.CountAsync(u => !u.IsActive);
-
-            var recentUsers = await _userManager.Users
-                .OrderByDescending(u => u.CreatedDate)
-                .Take(10)
-                .Select(u => new UserProfileDto
-                {
-                    Id = u.Id,
-                    Username = u.UserName,
-                    Email = u.Email,
-                    FullName = u.FullName,
-                    Role = u.Role,
-                    CreatedDate = u.CreatedDate,
-                    LastLoginDate = u.LastLoginDate
-                })
-                .ToListAsync();
-
-            var model = new AdminDashboardDto
+            var adminId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (!string.IsNullOrEmpty(adminId))
             {
-                TotalUsers = totalUsers,
-                TotalBuyers = totalBuyers,
-                TotalSellers = totalSellers,
-                TotalAdmins = totalAdmins,
-                ActiveUsers = activeUsers,
-                InactiveUsers = inactiveUsers,
-                RecentUsers = recentUsers
-            };
+                await _adminService.LogAdminActionAsync(adminId, "Dashboard Accessed", "Admin viewed the dashboard");
+            }
 
-            return View(model);
+            var dashboardData = await _adminService.GetDashboardDataAsync();
+            return View(dashboardData);
         }
 
         [HttpPost]
@@ -190,26 +225,5 @@ namespace Auction_Web.Controllers
 
             return Json(new { success = false, message = result.Message, errors = result.Errors });
         }
-    }
-
-    // Admin DTOs
-    public class AdminDashboardDto
-    {
-        public int TotalUsers { get; set; }
-        public int TotalBuyers { get; set; }
-        public int TotalSellers { get; set; }
-        public int TotalAdmins { get; set; }
-        public int ActiveUsers { get; set; }
-        public int InactiveUsers { get; set; }
-        public List<UserProfileDto> RecentUsers { get; set; } = new();
-    }
-
-    public class CreateAdminDto
-    {
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string FullName { get; set; }
-        public string Password { get; set; }
-        public string ConfirmPassword { get; set; }
     }
 }

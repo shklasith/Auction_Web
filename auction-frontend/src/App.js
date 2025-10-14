@@ -21,6 +21,10 @@ import CategoryPage from './pages/CategoryPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
+// Admin Pages
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminProfile from './pages/admin/AdminProfile';
+
 function App() {
   return (
     <Router>
@@ -58,6 +62,24 @@ function App() {
                 element={
                   <PrivateRoute requiredRole={['Seller', 'Administrator']}>
                     <CreateAuction />
+                  </PrivateRoute>
+                } 
+              />
+
+              {/* Admin Routes */}
+              <Route 
+                path="/admin/dashboard" 
+                element={
+                  <PrivateRoute requiredRole={['Administrator']}>
+                    <AdminDashboard />
+                  </PrivateRoute>
+                } 
+              />
+              <Route 
+                path="/admin/profile" 
+                element={
+                  <PrivateRoute requiredRole={['Administrator']}>
+                    <AdminProfile />
                   </PrivateRoute>
                 } 
               />
