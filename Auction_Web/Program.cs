@@ -69,8 +69,8 @@ builder.Services.AddSignalR();
 
 // Register application services
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IAuctionService, AuctionService>();
-builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddSingleton<IAuctionService, AuctionService>();
+builder.Services.AddSingleton<IImageService, ImageService>();
 builder.Services.AddScoped<IBiddingService, BiddingService>();
 
 // Add CORS for React frontend with SignalR support

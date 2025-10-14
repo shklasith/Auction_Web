@@ -146,7 +146,6 @@ namespace Auction_Web.Models
         public string? VerifiedBy { get; set; }
 
         // Navigation properties
-        public virtual User Seller { get; set; }
         public virtual User? Winner { get; set; }
         public virtual User? VerifiedByUser { get; set; }
         public virtual ICollection<Bid> Bids { get; set; } = new List<Bid>();

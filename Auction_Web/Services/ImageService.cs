@@ -61,23 +61,40 @@ namespace Auction_Web.Services
 
         public async Task<string> SaveImageAsync(IFormFile file, string folderPath = "auctions")
         {
+            _logger.LogInformation("Attempting to save image...");
+
             if (!await ValidateImageAsync(file))
             {
+                _logger.LogWarning("Invalid image file provided.");
                 throw new ArgumentException("Invalid image file");
             }
 
             var uploadPath = Path.Combine(_environment.WebRootPath, "uploads", folderPath);
             Directory.CreateDirectory(uploadPath);
+            _logger.LogInformation("Upload path: {UploadPath}", uploadPath);
 
             var fileName = GenerateUniqueFileName(file.FileName);
             var filePath = Path.Combine(uploadPath, fileName);
+            _logger.LogInformation("File path: {FilePath}", filePath);
 
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            try
             {
-                await file.CopyToAsync(stream);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+                _logger.LogInformation("Image saved successfully.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error saving image to disk.");
+                throw;
             }
 
-            return GenerateImageUrl(fileName, folderPath);
+            var imageUrl = GenerateImageUrl(fileName, folderPath);
+            _logger.LogInformation("Generated image URL: {ImageUrl}", imageUrl);
+
+            return imageUrl;
         }
 
         public async Task<bool> DeleteImageAsync(string imageUrl)

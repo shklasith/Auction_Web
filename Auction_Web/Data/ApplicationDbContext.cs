@@ -51,12 +51,7 @@ namespace Auction_Web.Data
                 entity.Property(e => e.ReservePrice).HasColumnType("decimal(18,2)");
                 entity.Property(e => e.BidIncrement).HasColumnType("decimal(18,2)");
                 entity.Property(e => e.ShippingCost).HasColumnType("decimal(10,2)");
-                
-                entity.HasOne(e => e.Seller)
-                    .WithMany(u => u.Auctions)
-                    .HasForeignKey(e => e.SellerId)
-                    .OnDelete(DeleteBehavior.Restrict);
-                    
+                                    
                 entity.HasOne(e => e.Winner)
                     .WithMany()
                     .HasForeignKey(e => e.WinnerId)

@@ -18,7 +18,7 @@ const CreateAuction = () => {
     reservePrice: '',
     startDate: '',
     endDate: '',
-    type: 'Standard',
+    type: 0,
     brand: '',
     model: '',
     size: '',
@@ -54,10 +54,10 @@ const CreateAuction = () => {
   ];
 
   const auctionTypes = [
-    { value: 'Standard', label: 'Standard Auction' },
-    { value: 'Reserve', label: 'Reserve Auction' },
-    { value: 'BuyItNow', label: 'Buy It Now' },
-    { value: 'DutchAuction', label: 'Dutch Auction' }
+    { value: 0, label: 'Standard Auction' },
+    { value: 1, label: 'Reserve Auction' },
+    { value: 2, label: 'Buy It Now' },
+    { value: 3, label: 'Dutch Auction' }
   ];
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const CreateAuction = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/auctions/categories');
+            const response = await axios.get('http://localhost:5103/api/auctions/categories');
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -82,7 +82,7 @@ const CreateAuction = () => {
 
   const fetchSubCategories = async (category) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/auctions/categories/${category}/subcategories`);
+            const response = await axios.get(`http://localhost:5103/api/auctions/categories/${category}/subcategories`);
       setSubCategories(response.data);
     } catch (error) {
       console.error('Error fetching subcategories:', error);
@@ -104,9 +104,16 @@ const CreateAuction = () => {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
+    let processedValue = type === 'checkbox' ? checked : value;
+    
+    // Convert type select to integer
+    if (name === 'type') {
+      processedValue = parseInt(value, 10);
+    }
+    
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: processedValue
     }));
     
     // Clear error when user starts typing
@@ -190,9 +197,7 @@ const CreateAuction = () => {
       newErrors.reservePrice = 'Reserve price must be at least the starting price';
     }
 
-    if (formData.images.length === 0) {
-      newErrors.images = 'At least one image is required';
-    }
+
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -212,6 +217,7 @@ const CreateAuction = () => {
       // Prepare the auction data
       const auctionData = {
         ...formData,
+        type: parseInt(formData.type, 10),
         startingPrice: parseFloat(formData.startingPrice),
         buyNowPrice: formData.buyNowPrice ? parseFloat(formData.buyNowPrice) : null,
         reservePrice: formData.reservePrice ? parseFloat(formData.reservePrice) : null,
@@ -221,10 +227,11 @@ const CreateAuction = () => {
         maxBids: formData.maxBids ? parseInt(formData.maxBids) : null,
         yearManufactured: formData.yearManufactured ? parseInt(formData.yearManufactured) : null,
         startDate: new Date(formData.startDate).toISOString(),
-        endDate: new Date(formData.endDate).toISOString()
+        endDate: new Date(formData.endDate).toISOString(),
+        sellerId: '1' // TODO: Replace with actual logged-in user ID
       };
 
-      const response = await axios.post('http://localhost:5000/api/auctions', auctionData);
+            const response = await axios.post('http://localhost:5103/api/auctions', auctionData);
       
       if (response.status === 201) {
         setSuccess('Auction created successfully!');
@@ -725,7 +732,7 @@ const CreateAuction = () => {
                 {/* Images */}
                 <Row>
                   <Col md={12}>
-                    <h5 className="mb-3">Images *</h5>
+                    <h5 className="mb-3">Images</h5>
                   </Col>
                 </Row>
 

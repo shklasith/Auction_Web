@@ -2,7 +2,7 @@
   "name": "auction-frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://localhost:7049",
+    "proxy": "http://localhost:5103",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.0.1",
     "@microsoft/signalr": "^9.0.6",

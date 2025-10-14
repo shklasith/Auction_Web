@@ -1,5 +1,7 @@
 using Auction_Web.Models;
 using Auction_Web.Models.DTOs;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace Auction_Web.Services
 {
@@ -30,10 +32,15 @@ namespace Auction_Web.Services
         // In a real application, this would use Entity Framework and a database
         private static List<Auction> _auctions = new List<Auction>();
         private static int _nextId = 1;
+        private readonly IImageService _imageService;
 
-        static AuctionService()
+        public AuctionService(IImageService imageService)
         {
-            InitializeSampleData();
+            _imageService = imageService;
+            if (!_auctions.Any())
+            {
+                InitializeSampleData();
+            }
         }
 
         public async Task<IEnumerable<Auction>> GetAuctionsAsync(AuctionSearchDto searchDto)
@@ -190,6 +197,18 @@ namespace Auction_Web.Services
             for (int i = 0; i < createDto.Images.Count; i++)
             {
                 var imageDto = createDto.Images[i];
+                
+                // Handle base64 image data
+                if (imageDto.ImageUrl.StartsWith("data:image"))
+                {
+                    var base64Data = imageDto.ImageUrl.Substring(imageDto.ImageUrl.IndexOf(',') + 1);
+                    var fileBytes = Convert.FromBase64String(base64Data);
+                    var stream = new MemoryStream(fileBytes);
+                    var formFile = new FormFile(stream, 0, fileBytes.Length, "image", "image.png");
+                    
+                    imageDto.ImageUrl = await _imageService.SaveImageAsync(formFile, "auctions");
+                }
+
                 auction.Images.Add(new AuctionImage
                 {
                     Id = i + 1,

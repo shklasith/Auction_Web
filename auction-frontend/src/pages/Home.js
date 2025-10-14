@@ -81,7 +81,7 @@ const Home = () => {
 
   const fetchFeaturedAuctions = async () => {
     try {
-      const response = await axios.get('/api/auctions?featured=true');
+            const response = await axios.get('http://localhost:5103/api/Auctions?featured=true');
       setFeaturedAuctions(response.data);
     } catch (error) {
       console.error('Error fetching featured auctions:', error);
@@ -94,7 +94,7 @@ const Home = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('/api/auctions/categories');
+            const response = await axios.get('http://localhost:5103/api/Auctions/categories');
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
