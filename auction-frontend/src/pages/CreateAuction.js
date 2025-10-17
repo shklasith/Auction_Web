@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert, InputGroup, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 
 const CreateAuction = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -50,8 +52,288 @@ const CreateAuction = () => {
   const [imageUploading, setImageUploading] = useState(false);
 
   const conditions = [
-    'New', 'Like New', 'Excellent', 'Very Good', 'Good', 'Fair', 'Poor'
+    'New',
+    'New with Tags',
+    'New without Tags',
+    'New in Box',
+    'Open Box',
+    'Like New',
+    'Mint',
+    'Near Mint',
+    'Excellent',
+    'Very Good',
+    'Good',
+    'Acceptable',
+    'Fair',
+    'Poor',
+    'For Parts or Not Working',
+    'Refurbished',
+    'Manufacturer Refurbished',
+    'Seller Refurbished',
+    'Used',
+    'Pre-Owned'
   ];
+
+  // Predefined categories with common auction items
+  const predefinedCategories = [
+    'Electronics',
+    'Fashion & Accessories',
+    'Home & Garden',
+    'Sports & Outdoors',
+    'Collectibles & Art',
+    'Toys & Hobbies',
+    'Books & Media',
+    'Jewelry & Watches',
+    'Automotive',
+    'Health & Beauty',
+    'Baby & Kids',
+    'Pet Supplies',
+    'Office Supplies',
+    'Musical Instruments',
+    'Cameras & Photography',
+    'Video Games & Consoles',
+    'Antiques',
+    'Crafts & DIY',
+    'Industrial & Scientific',
+    'Other'
+  ];
+
+  // Predefined subcategories for each category
+  const predefinedSubCategories = {
+    'Electronics': [
+      'Computers & Laptops',
+      'Tablets & E-readers',
+      'Cell Phones & Smartphones',
+      'TVs & Home Theater',
+      'Audio & Headphones',
+      'Cameras & Camcorders',
+      'Video Games & Consoles',
+      'Smart Home Devices',
+      'Wearable Technology',
+      'Computer Components',
+      'Networking Equipment',
+      'Other Electronics'
+    ],
+    'Fashion & Accessories': [
+      'Women\'s Clothing',
+      'Men\'s Clothing',
+      'Shoes',
+      'Bags & Handbags',
+      'Accessories',
+      'Sunglasses & Eyewear',
+      'Watches',
+      'Jewelry',
+      'Designer Fashion',
+      'Vintage Fashion',
+      'Other Fashion'
+    ],
+    'Home & Garden': [
+      'Furniture',
+      'Home Decor',
+      'Kitchen & Dining',
+      'Bedding & Bath',
+      'Garden & Outdoor',
+      'Tools & Hardware',
+      'Lighting',
+      'Storage & Organization',
+      'Home Improvement',
+      'Appliances',
+      'Other Home & Garden'
+    ],
+    'Sports & Outdoors': [
+      'Exercise & Fitness',
+      'Cycling',
+      'Camping & Hiking',
+      'Water Sports',
+      'Team Sports',
+      'Golf',
+      'Tennis',
+      'Winter Sports',
+      'Fishing',
+      'Hunting',
+      'Other Sports'
+    ],
+    'Collectibles & Art': [
+      'Artwork',
+      'Antiques',
+      'Coins & Currency',
+      'Stamps',
+      'Sports Memorabilia',
+      'Trading Cards',
+      'Comics',
+      'Vintage Items',
+      'Figurines',
+      'Pottery & Glass',
+      'Other Collectibles'
+    ],
+    'Toys & Hobbies': [
+      'Action Figures',
+      'Dolls & Bears',
+      'Building Toys',
+      'Remote Control',
+      'Model Kits',
+      'Board Games',
+      'Puzzles',
+      'Educational Toys',
+      'Outdoor Toys',
+      'Vintage Toys',
+      'Other Toys'
+    ],
+    'Books & Media': [
+      'Books',
+      'Textbooks',
+      'Magazines',
+      'DVDs & Blu-rays',
+      'Music CDs',
+      'Vinyl Records',
+      'Video Games',
+      'E-books',
+      'Audiobooks',
+      'Other Media'
+    ],
+    'Jewelry & Watches': [
+      'Fine Jewelry',
+      'Fashion Jewelry',
+      'Engagement Rings',
+      'Necklaces',
+      'Bracelets',
+      'Earrings',
+      'Watches - Men\'s',
+      'Watches - Women\'s',
+      'Luxury Watches',
+      'Vintage Jewelry',
+      'Other Jewelry'
+    ],
+    'Automotive': [
+      'Car Parts & Accessories',
+      'Motorcycle Parts',
+      'Tires & Wheels',
+      'Car Electronics',
+      'Tools & Equipment',
+      'Car Care',
+      'Performance Parts',
+      'Interior Accessories',
+      'Exterior Accessories',
+      'Other Automotive'
+    ],
+    'Health & Beauty': [
+      'Skincare',
+      'Makeup',
+      'Hair Care',
+      'Fragrances',
+      'Bath & Body',
+      'Nail Care',
+      'Health Supplements',
+      'Personal Care',
+      'Beauty Tools',
+      'Other Health & Beauty'
+    ],
+    'Baby & Kids': [
+      'Baby Clothing',
+      'Kids Clothing',
+      'Baby Gear',
+      'Strollers',
+      'Car Seats',
+      'Toys',
+      'Baby Care',
+      'Nursery Furniture',
+      'Feeding',
+      'Other Baby & Kids'
+    ],
+    'Pet Supplies': [
+      'Dog Supplies',
+      'Cat Supplies',
+      'Bird Supplies',
+      'Fish & Aquarium',
+      'Small Animal Supplies',
+      'Reptile Supplies',
+      'Pet Food',
+      'Pet Toys',
+      'Pet Grooming',
+      'Other Pet Supplies'
+    ],
+    'Office Supplies': [
+      'Desk Accessories',
+      'Writing Instruments',
+      'Paper Products',
+      'Filing & Organization',
+      'Office Furniture',
+      'Office Electronics',
+      'Presentation Supplies',
+      'Shipping Supplies',
+      'Other Office Supplies'
+    ],
+    'Musical Instruments': [
+      'Guitars',
+      'Keyboards & Pianos',
+      'Drums & Percussion',
+      'String Instruments',
+      'Wind Instruments',
+      'DJ Equipment',
+      'Recording Equipment',
+      'Amplifiers',
+      'Music Accessories',
+      'Other Instruments'
+    ],
+    'Cameras & Photography': [
+      'Digital Cameras',
+      'Film Cameras',
+      'Lenses',
+      'Tripods & Supports',
+      'Lighting & Studio',
+      'Camera Bags',
+      'Memory Cards',
+      'Camcorders',
+      'Drones',
+      'Other Photography'
+    ],
+    'Video Games & Consoles': [
+      'PlayStation',
+      'Xbox',
+      'Nintendo',
+      'PC Gaming',
+      'Retro Gaming',
+      'Gaming Accessories',
+      'Virtual Reality',
+      'Gaming Chairs',
+      'Other Gaming'
+    ],
+    'Antiques': [
+      'Furniture',
+      'Decorative Arts',
+      'Silver',
+      'Porcelain',
+      'Textiles',
+      'Clocks',
+      'Maps & Globes',
+      'Scientific Instruments',
+      'Militaria',
+      'Other Antiques'
+    ],
+    'Crafts & DIY': [
+      'Sewing',
+      'Knitting & Crochet',
+      'Scrapbooking',
+      'Painting Supplies',
+      'Woodworking',
+      'Jewelry Making',
+      'Fabric',
+      'Craft Tools',
+      'DIY Kits',
+      'Other Crafts'
+    ],
+    'Industrial & Scientific': [
+      'Lab Equipment',
+      'Industrial Tools',
+      'Safety Equipment',
+      'Electrical Equipment',
+      'Hydraulics',
+      'Pneumatics',
+      'Metalworking',
+      'Material Handling',
+      'Other Industrial'
+    ]
+  };
 
   const auctionTypes = [
     { value: 0, label: 'Standard Auction' },
@@ -74,19 +356,31 @@ const CreateAuction = () => {
   const fetchCategories = async () => {
     try {
             const response = await axios.get('http://localhost:5104/api/auctions/categories');
-      setCategories(response.data);
+      // Merge backend categories with predefined categories and remove duplicates
+      const backendCategories = response.data || [];
+      const allCategories = [...new Set([...predefinedCategories, ...backendCategories])].sort();
+      setCategories(allCategories);
     } catch (error) {
       console.error('Error fetching categories:', error);
+      // If backend fails, use predefined categories
+      setCategories(predefinedCategories);
     }
   };
 
   const fetchSubCategories = async (category) => {
     try {
             const response = await axios.get(`http://localhost:5104/api/auctions/categories/${category}/subcategories`);
-      setSubCategories(response.data);
+      const backendSubCategories = response.data || [];
+      
+      // Merge backend subcategories with predefined subcategories
+      const predefined = predefinedSubCategories[category] || [];
+      const allSubCategories = [...new Set([...predefined, ...backendSubCategories])].sort();
+      
+      setSubCategories(allSubCategories);
     } catch (error) {
       console.error('Error fetching subcategories:', error);
-      setSubCategories([]);
+      // If backend fails, use predefined subcategories
+      setSubCategories(predefinedSubCategories[category] || []);
     }
   };
 
@@ -210,10 +504,19 @@ const CreateAuction = () => {
       return;
     }
 
+    // Check if user is logged in
+    if (!user || !user.id) {
+      setErrors({ submit: 'You must be logged in to create an auction' });
+      return;
+    }
+
     setLoading(true);
     setErrors({});
 
     try {
+      // Get authentication token
+      const token = localStorage.getItem('token');
+      
       // Prepare the auction data
       const auctionData = {
         ...formData,
@@ -228,12 +531,17 @@ const CreateAuction = () => {
         yearManufactured: formData.yearManufactured ? parseInt(formData.yearManufactured) : null,
         startDate: new Date(formData.startDate).toISOString(),
         endDate: new Date(formData.endDate).toISOString(),
-        sellerId: '1' // TODO: Replace with actual logged-in user ID
+        sellerId: user.id
       };
 
-            const response = await axios.post('http://localhost:5104/api/auctions', auctionData);
+      const response = await axios.post('http://localhost:5104/api/auctions', auctionData, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
       
-      if (response.status === 201) {
+      if (response.status === 201 || response.status === 200) {
         setSuccess('Auction created successfully!');
         setTimeout(() => {
           navigate(`/auction/${response.data.id}`);
@@ -241,8 +549,18 @@ const CreateAuction = () => {
       }
     } catch (error) {
       console.error('Error creating auction:', error);
+      console.error('Error response:', error.response?.data);
+      
       if (error.response && error.response.data) {
-        setErrors({ submit: error.response.data.message || 'Failed to create auction' });
+        // Check if it's a validation error with detailed messages
+        if (error.response.data.errors) {
+          const errorMessages = Object.values(error.response.data.errors).flat();
+          setErrors({ submit: errorMessages.join('. ') });
+        } else {
+          setErrors({ submit: error.response.data.message || error.response.data.title || 'Failed to create auction' });
+        }
+      } else if (error.request) {
+        setErrors({ submit: 'Unable to reach the server. Please check your connection.' });
       } else {
         setErrors({ submit: 'Failed to create auction. Please try again.' });
       }
