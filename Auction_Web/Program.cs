@@ -73,6 +73,8 @@ builder.Services.AddSingleton<IAuctionService, AuctionService>();
 builder.Services.AddSingleton<IImageService, ImageService>();
 builder.Services.AddScoped<IBiddingService, BiddingService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IReportingService, ReportingService>();
+builder.Services.AddScoped<ISocialMediaService, SocialMediaService>();
 builder.Services.AddHttpContextAccessor(); // Required for AdminService to get IP address
 
 // Add CORS for React frontend with SignalR support

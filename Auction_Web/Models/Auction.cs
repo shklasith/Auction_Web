@@ -26,11 +26,11 @@ namespace Auction_Web.Models
         
         [Required]
         [StringLength(200)]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
         
         [Required]
         [StringLength(2000)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         
         [StringLength(5000)]
         public string? DetailedDescription { get; set; }
@@ -56,14 +56,14 @@ namespace Auction_Web.Models
         
         [Required]
         [StringLength(100)]
-        public string Category { get; set; }
+        public string Category { get; set; } = string.Empty;
         
         [StringLength(100)]
         public string? SubCategory { get; set; }
         
         [Required]
         [StringLength(50)]
-        public string Condition { get; set; }
+        public string Condition { get; set; } = string.Empty;
         
         [StringLength(1000)]
         public string? ConditionNotes { get; set; }
@@ -83,7 +83,7 @@ namespace Auction_Web.Models
         public int WatchlistCount { get; set; } = 0;
         
         [Required]
-        public string SellerId { get; set; }
+        public string SellerId { get; set; } = string.Empty;
         
         public string? WinnerId { get; set; }
         

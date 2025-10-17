@@ -11,7 +11,7 @@ class BiddingService {
     async initialize() {
         try {
             this.connection = new signalR.HubConnectionBuilder()
-                                .withUrl('http://localhost:5103/biddingHub')
+                                .withUrl('http://localhost:5104/biddingHub')
                 .withAutomaticReconnect([0, 2000, 10000, 30000])
                 .build();
 
@@ -101,7 +101,7 @@ class BiddingService {
     }
 
     async placeBid(auctionId, amount, bidderId) {
-                const response = await fetch('http://localhost:5103/api/bidding/place-bid', {
+                const response = await fetch('http://localhost:5104/api/bidding/place-bid', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -122,12 +122,12 @@ class BiddingService {
     }
 
     async getNextMinimumBid(auctionId) {
-                const response = await fetch(`http://localhost:5103/api/bidding/${auctionId}/next-minimum-bid`);
+                const response = await fetch(`http://localhost:5104/api/bidding/${auctionId}/next-minimum-bid`);
         return await response.json();
     }
 
     async getAuctionBids(auctionId) {
-                const response = await fetch(`http://localhost:5103/api/bidding/${auctionId}/bids`);
+                const response = await fetch(`http://localhost:5104/api/bidding/${auctionId}/bids`);
         return await response.json();
     }
 }

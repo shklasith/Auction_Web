@@ -26,13 +26,32 @@ class AuthService {
 
   async register(userData) {
     try {
+      console.log('Registering user with data:', { ...userData, password: '***', confirmPassword: '***' });
       const response = await this.api.post('/auth/register', userData);
+      console.log('Registration response:', response.data);
+      
       if (response.data.success && response.data.token) {
+        console.log('Registration successful, storing token and user');
         this.setToken(response.data.token);
         this.setUser(response.data.user);
+      } else {
+        console.warn('Registration succeeded but no token received');
       }
       return response.data;
     } catch (error) {
+      console.error('Registration error:', error);
+      console.error('Error response:', error.response?.data);
+      
+      // Handle network errors
+      if (!error.response) {
+        return {
+          success: false,
+          message: 'Network Error: Cannot connect to server. Please ensure the backend is running on http://localhost:5104',
+          errors: ['Unable to reach the server. The backend may not be running.']
+        };
+      }
+      
+      // Handle server errors
       return {
         success: false,
         message: error.response?.data?.message || 'Registration failed',
@@ -43,13 +62,32 @@ class AuthService {
 
   async login(credentials) {
     try {
+      console.log('Logging in with:', { usernameOrEmail: credentials.usernameOrEmail, password: '***' });
       const response = await this.api.post('/auth/login', credentials);
+      console.log('Login response:', response.data);
+      
       if (response.data.success && response.data.token) {
+        console.log('Login successful, storing token and user');
         this.setToken(response.data.token);
         this.setUser(response.data.user);
+      } else {
+        console.warn('Login request succeeded but no token received');
       }
       return response.data;
     } catch (error) {
+      console.error('Login error:', error);
+      console.error('Error response:', error.response?.data);
+      
+      // Handle network errors
+      if (!error.response) {
+        return {
+          success: false,
+          message: 'Network Error: Cannot connect to server. Please ensure the backend is running on http://localhost:5104',
+          errors: ['Unable to reach the server. The backend may not be running.']
+        };
+      }
+      
+      // Handle server errors
       return {
         success: false,
         message: error.response?.data?.message || 'Login failed',
@@ -131,17 +169,17 @@ class AuthService {
 
   isAdmin() {
     const user = this.getUser();
-    return user?.role === 'Administrator';
+    return user?.role === 'Administrator' || user?.role === 2;
   }
 
   isSeller() {
     const user = this.getUser();
-    return user?.role === 'Seller' || user?.role === 'Administrator';
+    return user?.role === 'Seller' || user?.role === 1 || user?.role === 'Administrator' || user?.role === 2;
   }
 
   isBuyer() {
     const user = this.getUser();
-    return user?.role === 'Buyer';
+    return user?.role === 'Buyer' || user?.role === 0;
   }
 }
 

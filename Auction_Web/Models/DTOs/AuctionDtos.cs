@@ -7,11 +7,11 @@ namespace Auction_Web.Models.DTOs
     {
         [Required]
         [StringLength(200)]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
         
         [Required]
         [StringLength(2000)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         
         [StringLength(5000)]
         public string? DetailedDescription { get; set; }
@@ -34,14 +34,14 @@ namespace Auction_Web.Models.DTOs
         
         [Required]
         [StringLength(100)]
-        public string Category { get; set; }
+        public string Category { get; set; } = string.Empty;
         
         [StringLength(100)]
         public string? SubCategory { get; set; }
         
         [Required]
         [StringLength(50)]
-        public string Condition { get; set; }
+        public string Condition { get; set; } = string.Empty;
         
         [StringLength(1000)]
         public string? ConditionNotes { get; set; }
@@ -111,7 +111,7 @@ namespace Auction_Web.Models.DTOs
     {
         [Required]
         [StringLength(500)]
-        public string ImageUrl { get; set; }
+        public string ImageUrl { get; set; } = string.Empty;
         
         [StringLength(255)]
         public string? AltText { get; set; }

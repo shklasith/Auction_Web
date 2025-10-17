@@ -174,8 +174,12 @@ const Profile = () => {
                 </p>
                 
                 <Badge className="profile-role-badge">
-                  <i className={`fas fa-${user.role === 'Administrator' ? 'crown' : user.role === 'Seller' ? 'gavel' : 'shopping-cart'} me-2`}></i>
-                  {user.role}
+                  <i className={`fas fa-${
+                    (user.role === 'Administrator' || user.role === 2) ? 'crown' : 
+                    (user.role === 'Seller' || user.role === 1) ? 'gavel' : 
+                    'shopping-cart'
+                  } me-2`}></i>
+                  {user.role === 0 ? 'Buyer' : user.role === 1 ? 'Seller' : user.role === 2 ? 'Administrator' : user.role}
                 </Badge>
                 
                 <div className="profile-stats mt-4">
@@ -298,7 +302,7 @@ const Profile = () => {
                   </div>
                   <h4>No Auctions Yet</h4>
                   <p>You haven't created any auctions yet</p>
-                  {(user.role === 'Seller' || user.role === 'Administrator') && (
+                  {(user.role === 'Seller' || user.role === 1 || user.role === 'Administrator' || user.role === 2) && (
                     <Link to="/create-auction" className="auth-btn d-inline-block">
                       <i className="fas fa-plus-circle me-2"></i>
                       Create Auction

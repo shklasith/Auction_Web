@@ -25,7 +25,7 @@ const AuctionList = () => {
       const params = new URLSearchParams();
       if (filters.category) params.append('category', filters.category);
       
-                  const response = await axios.get(`http://localhost:5103/api/Auctions?${params}`);
+                  const response = await axios.get(`http://localhost:5104/api/Auctions?${params}`);
       let auctionData = response.data;
       
       // Apply search filter
@@ -64,7 +64,7 @@ const AuctionList = () => {
 
   const fetchCategories = async () => {
     try {
-                  const response = await axios.get('http://localhost:5103/api/Auctions/categories');
+                  const response = await axios.get('http://localhost:5104/api/Auctions/categories');
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);

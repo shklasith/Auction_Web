@@ -18,7 +18,7 @@ namespace Auction_Web.Models
         
         [Required]
         [StringLength(500)]
-        public string ImageUrl { get; set; }
+        public string ImageUrl { get; set; } = string.Empty;
         
         [StringLength(255)]
         public string? FileName { get; set; }
@@ -60,7 +60,7 @@ namespace Auction_Web.Models
         public string? UploadedBy { get; set; }
 
         // Navigation properties
-        public virtual Auction Auction { get; set; }
+        public virtual Auction? Auction { get; set; }
         public virtual User? UploadedByUser { get; set; }
     }
 }

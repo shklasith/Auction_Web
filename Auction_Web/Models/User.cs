@@ -14,7 +14,7 @@ namespace Auction_Web.Models
     {
         [Required]
         [StringLength(200)]
-        public string FullName { get; set; }
+        public string FullName { get; set; } = string.Empty;
         
         public string? ProfileImage { get; set; }
         
@@ -30,7 +30,7 @@ namespace Auction_Web.Models
         
         public string? Address { get; set; }
         
-        public string? PhoneNumber { get; set; }
+        public override string? PhoneNumber { get; set; }
         
         public DateTime? LastLoginDate { get; set; }
         

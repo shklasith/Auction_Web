@@ -74,26 +74,33 @@ namespace Auction_Web.Services
                     PhoneNumber = model.PhoneNumber,
                     Address = model.Address,
                     CreatedDate = DateTime.UtcNow,
-                    IsActive = true
+                    IsActive = true,
+                    EmailConfirmed = true // Auto-confirm email for development
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
+                    // Update last login date for the new user
+                    user.LastLoginDate = DateTime.UtcNow;
+                    await _userManager.UpdateAsync(user);
+
                     var token = GenerateJwtToken(user);
                     var userProfile = new UserProfileDto
                     {
                         Id = user.Id,
-                        Username = user.UserName,
-                        Email = user.Email,
-                        FullName = user.FullName,
+                        Username = user.UserName ?? string.Empty,
+                        Email = user.Email ?? string.Empty,
+                        FullName = user.FullName ?? string.Empty,
+                        ProfileImage = user.ProfileImage,
                         Role = user.Role,
                         CreatedDate = user.CreatedDate,
                         PhoneNumber = user.PhoneNumber,
                         Address = user.Address,
                         Rating = user.Rating,
-                        TotalSales = user.TotalSales
+                        TotalSales = user.TotalSales,
+                        LastLoginDate = user.LastLoginDate
                     };
 
                     return new AuthResponseDto
@@ -114,10 +121,12 @@ namespace Auction_Web.Services
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Registration error: {ex.Message}");
                 return new AuthResponseDto
                 {
                     Success = false,
-                    Message = "An error occurred during registration."
+                    Message = "An error occurred during registration.",
+                    Errors = new List<string> { ex.Message }
                 };
             }
         }
@@ -130,12 +139,23 @@ namespace Auction_Web.Services
                 var user = await _userManager.FindByNameAsync(model.UsernameOrEmail) ??
                           await _userManager.FindByEmailAsync(model.UsernameOrEmail);
 
-                if (user == null || !user.IsActive)
+                if (user == null)
                 {
+                    Console.WriteLine($"Login failed: User not found for '{model.UsernameOrEmail}'");
                     return new AuthResponseDto
                     {
                         Success = false,
-                        Message = "Invalid credentials or account is deactivated."
+                        Message = "Invalid username or password."
+                    };
+                }
+
+                if (!user.IsActive)
+                {
+                    Console.WriteLine($"Login failed: Account is deactivated for user '{user.UserName}'");
+                    return new AuthResponseDto
+                    {
+                        Success = false,
+                        Message = "Your account has been deactivated. Please contact support."
                     };
                 }
 
@@ -151,9 +171,9 @@ namespace Auction_Web.Services
                     var userProfile = new UserProfileDto
                     {
                         Id = user.Id,
-                        Username = user.UserName,
-                        Email = user.Email,
-                        FullName = user.FullName,
+                        Username = user.UserName ?? string.Empty,
+                        Email = user.Email ?? string.Empty,
+                        FullName = user.FullName ?? string.Empty,
                         ProfileImage = user.ProfileImage,
                         Role = user.Role,
                         CreatedDate = user.CreatedDate,
@@ -164,6 +184,7 @@ namespace Auction_Web.Services
                         LastLoginDate = user.LastLoginDate
                     };
 
+                    Console.WriteLine($"Login successful for user '{user.UserName}'");
                     return new AuthResponseDto
                     {
                         Success = true,
@@ -173,18 +194,31 @@ namespace Auction_Web.Services
                     };
                 }
 
+                if (result.IsLockedOut)
+                {
+                    Console.WriteLine($"Login failed: Account is locked out for user '{user.UserName}'");
+                    return new AuthResponseDto
+                    {
+                        Success = false,
+                        Message = "Account is locked out. Please try again later."
+                    };
+                }
+
+                Console.WriteLine($"Login failed: Invalid password for user '{user.UserName}'");
                 return new AuthResponseDto
                 {
                     Success = false,
-                    Message = "Invalid credentials."
+                    Message = "Invalid username or password."
                 };
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Login error: {ex.Message}");
                 return new AuthResponseDto
                 {
                     Success = false,
-                    Message = "An error occurred during login."
+                    Message = "An error occurred during login.",
+                    Errors = new List<string> { ex.Message }
                 };
             }
         }
@@ -204,8 +238,8 @@ namespace Auction_Web.Services
                 }
 
                 // Update profile information
-                user.FullName = model.FullName;
-                user.Email = model.Email;
+                user.FullName = model.FullName ?? user.FullName;
+                user.Email = model.Email ?? user.Email;
                 user.PhoneNumber = model.PhoneNumber;
                 user.Address = model.Address;
 
@@ -229,9 +263,9 @@ namespace Auction_Web.Services
                     var userProfile = new UserProfileDto
                     {
                         Id = user.Id,
-                        Username = user.UserName,
-                        Email = user.Email,
-                        FullName = user.FullName,
+                        Username = user.UserName ?? string.Empty,
+                        Email = user.Email ?? string.Empty,
+                        FullName = user.FullName ?? string.Empty,
                         ProfileImage = user.ProfileImage,
                         Role = user.Role,
                         CreatedDate = user.CreatedDate,
@@ -257,7 +291,7 @@ namespace Auction_Web.Services
                     Message = "Profile update failed."
                 };
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new AuthResponseDto
                 {
@@ -299,7 +333,7 @@ namespace Auction_Web.Services
                     Message = "Password change failed."
                 };
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new AuthResponseDto
                 {
@@ -317,9 +351,9 @@ namespace Auction_Web.Services
             return new UserProfileDto
             {
                 Id = user.Id,
-                Username = user.UserName,
-                Email = user.Email,
-                FullName = user.FullName,
+                Username = user.UserName ?? string.Empty,
+                Email = user.Email ?? string.Empty,
+                FullName = user.FullName ?? string.Empty,
                 ProfileImage = user.ProfileImage,
                 Role = user.Role,
                 CreatedDate = user.CreatedDate,
@@ -361,10 +395,10 @@ namespace Auction_Web.Services
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id),
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Name, user.UserName ?? string.Empty),
+                    new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
                     new Claim(ClaimTypes.Role, user.Role.ToString()),
-                    new Claim("FullName", user.FullName)
+                    new Claim("FullName", user.FullName ?? string.Empty)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

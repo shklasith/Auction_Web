@@ -35,9 +35,9 @@ namespace Auction_Web.Controllers
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                query = query.Where(u => u.UserName.Contains(searchTerm) || 
-                                       u.Email.Contains(searchTerm) || 
-                                       u.FullName.Contains(searchTerm));
+                query = query.Where(u => (u.UserName != null && u.UserName.Contains(searchTerm)) || 
+                                       (u.Email != null && u.Email.Contains(searchTerm)) || 
+                                       (u.FullName != null && u.FullName.Contains(searchTerm)));
             }
 
             if (role.HasValue)
@@ -53,9 +53,9 @@ namespace Auction_Web.Controllers
                 .Select(u => new UserProfileDto
                 {
                     Id = u.Id,
-                    Username = u.UserName,
-                    Email = u.Email,
-                    FullName = u.FullName,
+                    Username = u.UserName ?? string.Empty,
+                    Email = u.Email ?? string.Empty,
+                    FullName = u.FullName ?? string.Empty,
                     ProfileImage = u.ProfileImage,
                     Role = u.Role,
                     CreatedDate = u.CreatedDate,

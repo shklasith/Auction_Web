@@ -13,7 +13,7 @@ const Register = () => {
     fullName: '',
     password: '',
     confirmPassword: '',
-    role: 'Buyer',
+    role: 0, // 0 = Buyer, 1 = Seller, 2 = Administrator
     phoneNumber: '',
     address: ''
   });
@@ -237,30 +237,30 @@ const Register = () => {
                     </Form.Label>
                     <div className="role-selector">
                       <div 
-                        className={`role-option ${formData.role === 'Buyer' ? 'selected' : ''}`}
-                        onClick={() => setFormData({ ...formData, role: 'Buyer' })}
+                        className={`role-option ${formData.role === 0 ? 'selected' : ''}`}
+                        onClick={() => setFormData({ ...formData, role: 0 })}
                       >
                         <input 
                           type="radio" 
                           name="role" 
-                          value="Buyer" 
-                          checked={formData.role === 'Buyer'}
-                          onChange={handleChange}
+                          value="0" 
+                          checked={formData.role === 0}
+                          onChange={(e) => setFormData({ ...formData, role: 0 })}
                         />
                         <i className="fas fa-shopping-cart"></i>
                         <h5>Buyer</h5>
                         <p>Browse and bid on auctions</p>
                       </div>
                       <div 
-                        className={`role-option ${formData.role === 'Seller' ? 'selected' : ''}`}
-                        onClick={() => setFormData({ ...formData, role: 'Seller' })}
+                        className={`role-option ${formData.role === 1 ? 'selected' : ''}`}
+                        onClick={() => setFormData({ ...formData, role: 1 })}
                       >
                         <input 
                           type="radio" 
                           name="role" 
-                          value="Seller" 
-                          checked={formData.role === 'Seller'}
-                          onChange={handleChange}
+                          value="1" 
+                          checked={formData.role === 1}
+                          onChange={(e) => setFormData({ ...formData, role: 1 })}
                         />
                         <i className="fas fa-gavel"></i>
                         <h5>Seller</h5>

@@ -82,8 +82,12 @@ const Header = () => {
                       <div className="fw-bold">{user?.fullName}</div>
                       <small className="text-muted">{user?.email}</small>
                       <div>
-                        <Badge bg={user?.role === 'Administrator' ? 'danger' : user?.role === 'Seller' ? 'success' : 'primary'}>
-                          {user?.role}
+                        <Badge bg={
+                          (user?.role === 'Administrator' || user?.role === 2) ? 'danger' : 
+                          (user?.role === 'Seller' || user?.role === 1) ? 'success' : 
+                          'primary'
+                        }>
+                          {user?.role === 0 ? 'Buyer' : user?.role === 1 ? 'Seller' : user?.role === 2 ? 'Administrator' : user?.role}
                         </Badge>
                       </div>
                     </div>
@@ -96,7 +100,7 @@ const Header = () => {
                     <Dropdown.Item as={Link} to="/my-bids" className="dropdown-item-custom">
                       <i className="fas fa-hand-paper me-2"></i>My Bids
                     </Dropdown.Item>
-                    {user?.role === 'Administrator' && (
+                    {(user?.role === 'Administrator' || user?.role === 2) && (
                       <>
                         <Dropdown.Divider />
                         <Dropdown.Item as={Link} to="/admin/dashboard" className="dropdown-item-custom">

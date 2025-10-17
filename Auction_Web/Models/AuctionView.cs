@@ -25,7 +25,7 @@ namespace Auction_Web.Models
         public string? ReferrerUrl { get; set; }
 
         // Navigation properties
-        public virtual Auction Auction { get; set; }
+        public virtual Auction? Auction { get; set; }
         public virtual User? User { get; set; }
     }
 }

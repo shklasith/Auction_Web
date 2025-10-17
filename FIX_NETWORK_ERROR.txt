@@ -1,0 +1,57 @@
+╔═══════════════════════════════════════════════════════════╗
+║                                                           ║
+║     FIXING "NETWORK ERROR" ON ACCOUNT CREATION           ║
+║                                                           ║
+╚═══════════════════════════════════════════════════════════╝
+
+PROBLEM: Getting network error message when creating account?
+
+SOLUTION: The backend server is not running!
+
+═══════════════════════════════════════════════════════════
+
+QUICK FIX - Choose ONE option:
+
+Option 1 (EASIEST):
+─────────────────────
+./start_both.sh
+
+
+Option 2 (Two terminals):
+─────────────────────────
+Terminal 1:
+  cd Auction_Web
+  dotnet run
+
+Terminal 2:
+  cd auction-frontend
+  npm start
+
+═══════════════════════════════════════════════════════════
+
+VERIFY IT'S WORKING:
+
+./check_setup.sh
+
+You should see:
+  ✅ Backend is running on port 5104
+  ✅ Frontend is running on port 3000
+
+═══════════════════════════════════════════════════════════
+
+THEN TRY AGAIN:
+
+1. Go to http://localhost:3000/register
+2. Fill in the registration form
+3. Click "Create Account"
+4. Should work now!
+
+═══════════════════════════════════════════════════════════
+
+STILL NOT WORKING?
+
+1. Check browser console (press F12)
+2. Read: QUICK_FIX_NETWORK_ERROR.md
+3. Or read: NETWORK_ERROR_FIX.md for detailed help
+
+═══════════════════════════════════════════════════════════

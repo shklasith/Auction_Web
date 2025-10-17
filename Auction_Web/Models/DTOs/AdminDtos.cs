@@ -15,8 +15,8 @@ namespace Auction_Web.Models.DTOs
     public class AdminActivityLogDto
     {
         public int Id { get; set; }
-        public string Action { get; set; }
-        public string Description { get; set; }
+        public string Action { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         public DateTime Timestamp { get; set; }
         public string? IpAddress { get; set; }
     }
@@ -53,12 +53,12 @@ namespace Auction_Web.Models.DTOs
 
     public class RecentActivityDto
     {
-        public string Type { get; set; }
-        public string Description { get; set; }
-        public string UserName { get; set; }
+        public string Type { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
         public DateTime Timestamp { get; set; }
-        public string Icon { get; set; }
-        public string Color { get; set; }
+        public string Icon { get; set; } = string.Empty;
+        public string Color { get; set; } = string.Empty;
     }
 
     public class SystemHealthDto
@@ -74,23 +74,23 @@ namespace Auction_Web.Models.DTOs
     {
         [Required]
         [StringLength(100)]
-        public string Username { get; set; }
+        public string Username { get; set; } = string.Empty;
 
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         [Required]
         [StringLength(200)]
-        public string FullName { get; set; }
+        public string FullName { get; set; } = string.Empty;
 
         [Required]
         [StringLength(100, MinimumLength = 6)]
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
 
         [Required]
         [Compare("Password")]
-        public string ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; } = string.Empty;
 
         public string? PhoneNumber { get; set; }
     }
@@ -98,24 +98,24 @@ namespace Auction_Web.Models.DTOs
     public class AuctionManagementDto
     {
         public int Id { get; set; }
-        public string Title { get; set; }
-        public string SellerName { get; set; }
-        public string SellerId { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string SellerName { get; set; } = string.Empty;
+        public string SellerId { get; set; } = string.Empty;
         public decimal StartingPrice { get; set; }
         public decimal? CurrentBid { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public string Status { get; set; }
+        public string Status { get; set; } = string.Empty;
         public int TotalBids { get; set; }
         public bool IsFlagged { get; set; }
     }
 
     public class UserReportDto
     {
-        public string Id { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string FullName { get; set; }
+        public string Id { get; set; } = string.Empty;
+        public string Username { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty;
         public UserRole Role { get; set; }
         public DateTime CreatedDate { get; set; }
         public int AuctionsCreated { get; set; }
@@ -129,16 +129,16 @@ namespace Auction_Web.Models.DTOs
     public class AuctionReportDto
     {
         public int Id { get; set; }
-        public string Title { get; set; }
-        public string SellerName { get; set; }
-        public string WinnerName { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string SellerName { get; set; } = string.Empty;
+        public string WinnerName { get; set; } = string.Empty;
         public decimal StartingPrice { get; set; }
         public decimal FinalPrice { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int TotalBids { get; set; }
-        public string Status { get; set; }
-        public string Category { get; set; }
+        public string Status { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
     }
 
     public class RevenueReportDto
@@ -154,10 +154,10 @@ namespace Auction_Web.Models.DTOs
     public class SystemSettingDto
     {
         public int Id { get; set; }
-        public string SettingKey { get; set; }
-        public string SettingValue { get; set; }
-        public string Category { get; set; }
-        public string UpdatedBy { get; set; }
+        public string SettingKey { get; set; } = string.Empty;
+        public string SettingValue { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
+        public string UpdatedBy { get; set; } = string.Empty;
         public DateTime UpdatedAt { get; set; }
     }
 }

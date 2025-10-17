@@ -20,12 +20,21 @@ const PrivateRoute = ({ children, requiredRole }) => {
   }
 
   if (requiredRole) {
+    // Helper function to check role match (handles both numeric and string roles)
+    const roleMatches = (userRole, requiredRole) => {
+      // Map numeric roles to strings
+      const roleMap = { 0: 'Buyer', 1: 'Seller', 2: 'Administrator' };
+      const normalizedUserRole = typeof userRole === 'number' ? roleMap[userRole] : userRole;
+      const normalizedRequiredRole = typeof requiredRole === 'number' ? roleMap[requiredRole] : requiredRole;
+      return normalizedUserRole === normalizedRequiredRole;
+    };
+
     if (Array.isArray(requiredRole)) {
-      if (!requiredRole.includes(user.role)) {
+      if (!requiredRole.some(role => roleMatches(user.role, role))) {
         return <Navigate to="/" replace />;
       }
     } else {
-      if (user.role !== requiredRole) {
+      if (!roleMatches(user.role, requiredRole)) {
         return <Navigate to="/" replace />;
       }
     }

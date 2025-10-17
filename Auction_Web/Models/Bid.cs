@@ -17,13 +17,13 @@ namespace Auction_Web.Models
         public int AuctionId { get; set; }
         
         [Required]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
         
         // Alternative property name for compatibility
         public string BidderId => UserId;
         
         // Navigation properties
-        public virtual Auction Auction { get; set; }
-        public virtual User User { get; set; }
+        public virtual Auction? Auction { get; set; }
+        public virtual User? User { get; set; }
     }
 }

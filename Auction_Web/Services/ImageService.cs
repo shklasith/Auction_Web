@@ -19,8 +19,8 @@ namespace Auction_Web.Services
         public long FileSize { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-        public string Format { get; set; }
-        public string FileName { get; set; }
+        public string Format { get; set; } = string.Empty;
+        public string FileName { get; set; } = string.Empty;
     }
 
     public class ImageService : IImageService
@@ -29,8 +29,6 @@ namespace Auction_Web.Services
         private readonly ILogger<ImageService> _logger;
         private readonly string[] _allowedExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
         private readonly long _maxFileSize = 10 * 1024 * 1024; // 10MB
-        private readonly int _maxWidth = 2048;
-        private readonly int _maxHeight = 2048;
 
         public ImageService(IWebHostEnvironment environment, ILogger<ImageService> logger)
         {

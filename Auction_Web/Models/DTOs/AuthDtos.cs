@@ -6,23 +6,23 @@ namespace Auction_Web.Models.DTOs
     {
         [Required]
         [StringLength(100)]
-        public string Username { get; set; }
+        public string Username { get; set; } = string.Empty;
 
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         [Required]
         [StringLength(200)]
-        public string FullName { get; set; }
+        public string FullName { get; set; } = string.Empty;
 
         [Required]
         [StringLength(100, MinimumLength = 6)]
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
 
         [Required]
         [Compare("Password")]
-        public string ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; } = string.Empty;
 
         public UserRole Role { get; set; } = UserRole.Buyer;
 
@@ -34,10 +34,10 @@ namespace Auction_Web.Models.DTOs
     public class LoginDto
     {
         [Required]
-        public string UsernameOrEmail { get; set; }
+        public string UsernameOrEmail { get; set; } = string.Empty;
 
         [Required]
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
 
         public bool RememberMe { get; set; }
     }
@@ -46,10 +46,10 @@ namespace Auction_Web.Models.DTOs
     {
         [Required]
         [StringLength(200)]
-        public string FullName { get; set; }
+        public string FullName { get; set; } = string.Empty;
 
         [EmailAddress]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         public string? PhoneNumber { get; set; }
 
@@ -61,23 +61,23 @@ namespace Auction_Web.Models.DTOs
     public class ChangePasswordDto
     {
         [Required]
-        public string CurrentPassword { get; set; }
+        public string CurrentPassword { get; set; } = string.Empty;
 
         [Required]
         [StringLength(100, MinimumLength = 6)]
-        public string NewPassword { get; set; }
+        public string NewPassword { get; set; } = string.Empty;
 
         [Required]
         [Compare("NewPassword")]
-        public string ConfirmNewPassword { get; set; }
+        public string ConfirmNewPassword { get; set; } = string.Empty;
     }
 
     public class UserProfileDto
     {
-        public string Id { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string FullName { get; set; }
+        public string Id { get; set; } = string.Empty;
+        public string Username { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty;
         public string? ProfileImage { get; set; }
         public DateTime CreatedDate { get; set; }
         public decimal Rating { get; set; }

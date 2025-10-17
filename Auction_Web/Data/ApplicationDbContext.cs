@@ -28,6 +28,11 @@ namespace Auction_Web.Data
         
         // Admin tables
         public DbSet<AdminActivityLog> AdminActivityLogs { get; set; }
+        
+        // Social Media Integration tables
+        public DbSet<SocialShare> SocialShares { get; set; }
+        public DbSet<SocialMediaAccount> SocialMediaAccounts { get; set; }
+        public DbSet<ShareTemplate> ShareTemplates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -316,6 +321,55 @@ namespace Auction_Web.Data
                 entity.HasIndex(e => e.AdminId);
                 entity.HasIndex(e => e.Action);
                 entity.HasIndex(e => e.Timestamp);
+            });
+
+            // Configure SocialShare entity
+            builder.Entity<SocialShare>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                
+                entity.HasOne(e => e.Auction)
+                    .WithMany()
+                    .HasForeignKey(e => e.AuctionId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                    
+                entity.HasOne(e => e.User)
+                    .WithMany()
+                    .HasForeignKey(e => e.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                    
+                entity.HasIndex(e => e.AuctionId);
+                entity.HasIndex(e => e.UserId);
+                entity.HasIndex(e => e.Platform);
+                entity.HasIndex(e => e.SharedDate);
+                entity.HasIndex(e => new { e.AuctionId, e.Platform });
+            });
+
+            // Configure SocialMediaAccount entity
+            builder.Entity<SocialMediaAccount>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                
+                entity.HasOne(e => e.User)
+                    .WithMany()
+                    .HasForeignKey(e => e.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                    
+                // Unique constraint: one account per platform per user
+                entity.HasIndex(e => new { e.UserId, e.Platform }).IsUnique();
+                entity.HasIndex(e => e.Platform);
+                entity.HasIndex(e => e.IsConnected);
+            });
+
+            // Configure ShareTemplate entity
+            builder.Entity<ShareTemplate>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                
+                entity.HasIndex(e => e.Platform);
+                entity.HasIndex(e => e.IsActive);
+                entity.HasIndex(e => e.IsDefault);
+                entity.HasIndex(e => new { e.Platform, e.IsDefault });
             });
         }
     }

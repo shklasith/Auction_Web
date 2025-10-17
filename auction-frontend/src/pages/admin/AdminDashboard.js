@@ -316,10 +316,10 @@ const AdminDashboard = () => {
                         </td>
                         <td>
                           <Badge bg={
-                            user.role === 'Administrator' ? 'danger' :
-                            user.role === 'Seller' ? 'success' : 'primary'
+                            (user.role === 'Administrator' || user.role === 2) ? 'danger' :
+                            (user.role === 'Seller' || user.role === 1) ? 'success' : 'primary'
                           }>
-                            {user.role}
+                            {user.role === 0 ? 'Buyer' : user.role === 1 ? 'Seller' : user.role === 2 ? 'Administrator' : user.role}
                           </Badge>
                         </td>
                         <td>

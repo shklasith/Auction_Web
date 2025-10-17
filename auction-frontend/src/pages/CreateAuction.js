@@ -73,7 +73,7 @@ const CreateAuction = () => {
 
   const fetchCategories = async () => {
     try {
-            const response = await axios.get('http://localhost:5103/api/auctions/categories');
+            const response = await axios.get('http://localhost:5104/api/auctions/categories');
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -82,7 +82,7 @@ const CreateAuction = () => {
 
   const fetchSubCategories = async (category) => {
     try {
-            const response = await axios.get(`http://localhost:5103/api/auctions/categories/${category}/subcategories`);
+            const response = await axios.get(`http://localhost:5104/api/auctions/categories/${category}/subcategories`);
       setSubCategories(response.data);
     } catch (error) {
       console.error('Error fetching subcategories:', error);
@@ -231,7 +231,7 @@ const CreateAuction = () => {
         sellerId: '1' // TODO: Replace with actual logged-in user ID
       };
 
-            const response = await axios.post('http://localhost:5103/api/auctions', auctionData);
+            const response = await axios.post('http://localhost:5104/api/auctions', auctionData);
       
       if (response.status === 201) {
         setSuccess('Auction created successfully!');

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Auction_Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251014173000_AddAdminActivityLogTable")]
-    partial class AddAdminActivityLogTable
+    [Migration("20251014213325_SyncDatabase")]
+    partial class SyncDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -638,6 +638,149 @@ namespace Auction_Web.Migrations
                     b.ToTable("PaymentRecords");
                 });
 
+            modelBuilder.Entity("Auction_Web.Models.ShareTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Hashtags")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("Platform")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Template")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsActive");
+
+                    b.HasIndex("IsDefault");
+
+                    b.HasIndex("Platform");
+
+                    b.HasIndex("Platform", "IsDefault");
+
+                    b.ToTable("ShareTemplates");
+                });
+
+            modelBuilder.Entity("Auction_Web.Models.SocialMediaAccount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccessToken")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("AccountName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("AutoShare")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("ConnectedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsConnected")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("LastUsedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Platform")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("TokenExpiry")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsConnected");
+
+                    b.HasIndex("Platform");
+
+                    b.HasIndex("UserId", "Platform")
+                        .IsUnique();
+
+                    b.ToTable("SocialMediaAccounts");
+                });
+
+            modelBuilder.Entity("Auction_Web.Models.SocialShare", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AuctionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Clicks")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Conversions")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Platform")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShareMessage")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ShareUrl")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("SharedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuctionId");
+
+                    b.HasIndex("Platform");
+
+                    b.HasIndex("SharedDate");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("AuctionId", "Platform");
+
+                    b.ToTable("SocialShares");
+                });
+
             modelBuilder.Entity("Auction_Web.Models.SystemSetting", b =>
                 {
                     b.Property<int>("Id")
@@ -1260,6 +1403,36 @@ namespace Auction_Web.Migrations
                         .IsRequired();
 
                     b.Navigation("Transaction");
+                });
+
+            modelBuilder.Entity("Auction_Web.Models.SocialMediaAccount", b =>
+                {
+                    b.HasOne("Auction_Web.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Auction_Web.Models.SocialShare", b =>
+                {
+                    b.HasOne("Auction_Web.Models.Auction", "Auction")
+                        .WithMany()
+                        .HasForeignKey("AuctionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Auction_Web.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Auction");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Auction_Web.Models.SystemSetting", b =>

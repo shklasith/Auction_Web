@@ -30,16 +30,16 @@ namespace Auction_Web.Models
         
         [Required]
         [StringLength(100)]
-        public string TransactionId { get; set; }
+        public string TransactionId { get; set; } = string.Empty;
         
         [Required]
         public int AuctionId { get; set; }
         
         [Required]
-        public string BuyerId { get; set; }
+        public string BuyerId { get; set; } = string.Empty;
         
         [Required]
-        public string SellerId { get; set; }
+        public string SellerId { get; set; } = string.Empty;
         
         // Financial Details
         [Required]
@@ -88,8 +88,8 @@ namespace Auction_Web.Models
         public string? InternalNotes { get; set; }
         
         // Navigation properties
-        public virtual Auction Auction { get; set; }
-        public virtual User Buyer { get; set; }
-        public virtual User Seller { get; set; }
+        public virtual Auction? Auction { get; set; }
+        public virtual User? Buyer { get; set; }
+        public virtual User? Seller { get; set; }
     }
 }

@@ -69,15 +69,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   const isAdmin = () => {
-    return user?.role === 'Administrator';
+    return user?.role === 'Administrator' || user?.role === 2;
   };
 
   const isSeller = () => {
-    return user?.role === 'Seller' || user?.role === 'Administrator';
+    return user?.role === 'Seller' || user?.role === 1 || user?.role === 'Administrator' || user?.role === 2;
   };
 
   const isBuyer = () => {
-    return user?.role === 'Buyer';
+    return user?.role === 'Buyer' || user?.role === 0;
   };
 
   const value = {
