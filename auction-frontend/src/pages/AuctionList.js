@@ -14,6 +14,236 @@ const AuctionList = () => {
     sortBy: 'newest'
   });
 
+  // Sample auctions data
+  const sampleAuctions = [
+    {
+      id: 1,
+      title: "Vintage Rolex Submariner Watch",
+      description: "Rare 1960s Rolex Submariner in excellent condition. Comes with original box and papers. A true collector's piece with timeless design.",
+      currentPrice: 8500,
+      buyNowPrice: 12000,
+      startingPrice: 5000,
+      endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
+      createdDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+      category: "Watches",
+      bidCount: 23,
+      viewCount: 456,
+      isFeatured: true,
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=500" }]
+    },
+    {
+      id: 2,
+      title: "Apple MacBook Pro 16-inch M3 Max",
+      description: "Brand new, sealed MacBook Pro with M3 Max chip, 64GB RAM, 2TB SSD. Perfect for professionals and creators.",
+      currentPrice: 3200,
+      buyNowPrice: 4000,
+      startingPrice: 2500,
+      endDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+      createdDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+      category: "Electronics",
+      bidCount: 45,
+      viewCount: 892,
+      isFeatured: true,
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500" }]
+    },
+    {
+      id: 3,
+      title: "Vintage Gibson Les Paul Electric Guitar",
+      description: "1959 Gibson Les Paul Standard in Sunburst finish. Professionally restored and maintained. Legendary tone and playability.",
+      currentPrice: 15000,
+      buyNowPrice: 22000,
+      startingPrice: 10000,
+      endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      createdDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      category: "Musical Instruments",
+      bidCount: 67,
+      viewCount: 1234,
+      isFeatured: true,
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1556449895-a33c9dba33dd?w=500" }]
+    },
+    {
+      id: 4,
+      title: "Rare Pokémon Card Collection",
+      description: "First edition Charizard and complete base set. All cards graded PSA 9 or higher. Perfect for serious collectors.",
+      currentPrice: 5600,
+      buyNowPrice: 8500,
+      startingPrice: 4000,
+      endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+      createdDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+      category: "Collectibles",
+      bidCount: 34,
+      viewCount: 678,
+      isFeatured: false,
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1606728035253-49e8a23146de?w=500" }]
+    },
+    {
+      id: 5,
+      title: "Signed Michael Jordan Basketball",
+      description: "Official NBA basketball signed by Michael Jordan. Comes with certificate of authenticity. Perfect display piece.",
+      currentPrice: 1200,
+      buyNowPrice: 2000,
+      startingPrice: 800,
+      endDate: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString(),
+      createdDate: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+      category: "Sports Memorabilia",
+      bidCount: 19,
+      viewCount: 342,
+      isFeatured: false,
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=500" }]
+    },
+    {
+      id: 6,
+      title: "Canon EOS R5 Mirrorless Camera",
+      description: "Professional full-frame mirrorless camera with 45MP sensor. Includes RF 24-70mm f/2.8 lens. Mint condition with low shutter count.",
+      currentPrice: 2800,
+      buyNowPrice: 3800,
+      startingPrice: 2200,
+      endDate: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toISOString(),
+      createdDate: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
+      category: "Electronics",
+      bidCount: 28,
+      viewCount: 523,
+      isFeatured: false,
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1606982261825-2e81d2ba5a1e?w=500" }]
+    },
+    {
+      id: 7,
+      title: "Herman Miller Aeron Chair",
+      description: "Size B ergonomic office chair in graphite. Fully loaded with all features. Like new condition, barely used.",
+      currentPrice: 650,
+      buyNowPrice: 900,
+      startingPrice: 500,
+      endDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(),
+      createdDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+      category: "Furniture",
+      bidCount: 12,
+      viewCount: 287,
+      isFeatured: false,
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=500" }]
+    },
+    {
+      id: 8,
+      title: "First Edition Harry Potter Book Set",
+      description: "Complete set of UK first edition Harry Potter books. All in excellent condition with dust jackets. A must-have for collectors.",
+      currentPrice: 3200,
+      buyNowPrice: 5000,
+      startingPrice: 2500,
+      endDate: new Date(Date.now() + 8 * 24 * 60 * 60 * 1000).toISOString(),
+      createdDate: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+      category: "Books",
+      bidCount: 41,
+      viewCount: 789,
+      isFeatured: true,
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1621351183012-e2f9972dd9bf?w=500" }]
+    },
+    {
+      id: 9,
+      title: "PlayStation 5 Console Bundle",
+      description: "PS5 disc edition with extra controller, charging station, and 5 popular games. All items like new in original packaging.",
+      currentPrice: 580,
+      buyNowPrice: 750,
+      startingPrice: 450,
+      endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
+      createdDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+      category: "Electronics",
+      bidCount: 56,
+      viewCount: 934,
+      isFeatured: false,
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=500" }]
+    },
+    {
+      id: 10,
+      title: "Original Pablo Picasso Lithograph",
+      description: "Authentic signed Picasso lithograph from 1960. Professionally framed and authenticated. Rare investment piece.",
+      currentPrice: 25000,
+      buyNowPrice: 35000,
+      startingPrice: 18000,
+      endDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
+      createdDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+      category: "Art",
+      bidCount: 15,
+      viewCount: 456,
+      isFeatured: true,
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=500" }]
+    },
+    {
+      id: 11,
+      title: "Louis Vuitton Monogram Handbag",
+      description: "Authentic Louis Vuitton Speedy 30 in classic monogram canvas. Excellent condition with minimal signs of use.",
+      currentPrice: 850,
+      buyNowPrice: 1200,
+      startingPrice: 650,
+      endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+      createdDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+      category: "Fashion",
+      bidCount: 29,
+      viewCount: 567,
+      isFeatured: false,
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500" }]
+    },
+    {
+      id: 12,
+      title: "DJI Mavic 3 Pro Drone",
+      description: "Professional triple-camera drone with Fly More Combo. Includes extra batteries, ND filters, and hard case. Nearly new condition.",
+      currentPrice: 1800,
+      buyNowPrice: 2500,
+      startingPrice: 1400,
+      endDate: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString(),
+      createdDate: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+      category: "Electronics",
+      bidCount: 37,
+      viewCount: 621,
+      isFeatured: false,
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=500" }]
+    },
+    {
+      id: 13,
+      title: "Antique Persian Rug",
+      description: "Hand-knotted wool rug from the early 20th century. Intricate design and vibrant colors. A beautiful piece of history for your home.",
+      currentPrice: 2200,
+      buyNowPrice: 3500,
+      startingPrice: 1500,
+      endDate: new Date(Date.now() + 9 * 24 * 60 * 60 * 1000).toISOString(),
+      createdDate: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000).toISOString(),
+      category: "Home Decor",
+      bidCount: 25,
+      viewCount: 489,
+      isFeatured: true,
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1588979242349-9aa1c1a7f6fe?w=500" }]
+    },
+    {
+      id: 14,
+      title: "Vintage Chanel Flap Bag",
+      description: "Classic black leather Chanel flap bag with gold hardware. A timeless piece of fashion history. Good condition for its age.",
+      currentPrice: 3800,
+      buyNowPrice: 5500,
+      startingPrice: 3000,
+      endDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+      createdDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+      category: "Fashion",
+      bidCount: 52,
+      viewCount: 891,
+      isFeatured: true,
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1590664863685-a9999b6f7a77?w=500" }]
+    },
+    {
+      id: 15,
+      title: "Trek Madone SLR 9 Road Bike",
+      description: "Top-of-the-line carbon road bike with Shimano Dura-Ace Di2 electronic shifting. Incredibly lightweight and aerodynamic. Size 56cm.",
+      currentPrice: 6500,
+      buyNowPrice: 9000,
+      startingPrice: 5000,
+      endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      createdDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      category: "Sporting Goods",
+      bidCount: 48,
+      viewCount: 754,
+      isFeatured: false,
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?w=500" }]
+    }
+
+  ];
+
   useEffect(() => {
     fetchAuctions();
     fetchCategories();
@@ -22,11 +252,30 @@ const AuctionList = () => {
   const fetchAuctions = async () => {
     try {
       setLoading(true);
-      const params = new URLSearchParams();
-      if (filters.category) params.append('category', filters.category);
+      let auctionData = [];
       
-                  const response = await axios.get(`http://localhost:5104/api/Auctions?${params}`);
-      let auctionData = response.data;
+      try {
+        const params = new URLSearchParams();
+        if (filters.category) params.append('category', filters.category);
+        
+        const response = await axios.get(`https://localhost:7274/api/Auctions?${params}`);
+        auctionData = response.data || [];
+      } catch (apiError) {
+        console.log('API not available, using sample data');
+        auctionData = [];
+      }
+      
+      // If no data from API, use sample data
+      if (auctionData.length === 0) {
+        auctionData = [...sampleAuctions];
+        
+        // Apply category filter
+        if (filters.category) {
+          auctionData = auctionData.filter(auction => 
+            auction.category === filters.category
+          );
+        }
+      }
       
       // Apply search filter
       if (filters.search) {
@@ -57,6 +306,8 @@ const AuctionList = () => {
       setAuctions(auctionData);
     } catch (error) {
       console.error('Error fetching auctions:', error);
+      // Fallback to sample data on any error
+      setAuctions(sampleAuctions);
     } finally {
       setLoading(false);
     }
@@ -64,10 +315,18 @@ const AuctionList = () => {
 
   const fetchCategories = async () => {
     try {
-                  const response = await axios.get('http://localhost:5104/api/Auctions/categories');
-      setCategories(response.data);
+      try {
+        const response = await axios.get('https://localhost:7274/api/Auctions/categories');
+        setCategories(response.data || []);
+      } catch (apiError) {
+        // Use categories from sample data
+        const uniqueCategories = [...new Set(sampleAuctions.map(a => a.category))];
+        setCategories(uniqueCategories);
+      }
     } catch (error) {
       console.error('Error fetching categories:', error);
+      // Fallback to sample categories
+      setCategories(['Electronics', 'Watches', 'Musical Instruments', 'Collectibles', 'Sports Memorabilia', 'Furniture', 'Books', 'Art', 'Fashion']);
     }
   };
 
@@ -204,7 +463,7 @@ const AuctionList = () => {
                     <div className="position-relative">
                       <Card.Img
                         variant="top"
-                        src={auction.images?.[0]?.imageUrl || 'https://via.placeholder.com/300x200'}
+                        src={auction.images && auction.images.length > 0 ? auction.images[0].imageUrl : 'https://via.placeholder.com/300x200.png?text=No+Image'}
                         style={{ height: '200px', objectFit: 'cover' }}
                       />
                       {auction.isFeatured && (

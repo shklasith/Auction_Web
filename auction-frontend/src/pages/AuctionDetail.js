@@ -119,7 +119,7 @@ const AuctionDetail = () => {
                                 {auction.images.map((image, index) => (
                                     <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
                                         <img 
-                                            src={image.imageUrl} 
+                                            src={`https://source.unsplash.com/featured/?auction,${auction.id},${index}`} 
                                             className="d-block w-100" 
                                             alt={image.alt}
                                             style={{ height: '400px', objectFit: 'cover', borderRadius: '0.375rem' }}

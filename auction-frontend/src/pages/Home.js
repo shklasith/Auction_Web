@@ -26,7 +26,7 @@ const Home = () => {
       startingPrice: 800.00,
       bidCount: 28,
       endDate: new Date(Date.now() + 6 * 60 * 60 * 1000),
-      images: [{ imageUrl: "https://via.placeholder.com/200x150/4a90e2/ffffff?text=Vintage+Watch" }],
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=2598&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" }],
       category: "Collectibles"
     },
     {
@@ -36,7 +36,7 @@ const Home = () => {
       startingPrice: 1200.00,
       bidCount: 45,
       endDate: new Date(Date.now() + 12 * 60 * 60 * 1000),
-      images: [{ imageUrl: "https://via.placeholder.com/200x150/50c878/ffffff?text=Gaming+Laptop" }],
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" }],
       category: "Electronics"
     },
     {
@@ -46,7 +46,7 @@ const Home = () => {
       startingPrice: 400.00,
       bidCount: 22,
       endDate: new Date(Date.now() + 8 * 60 * 60 * 1000),
-      images: [{ imageUrl: "https://via.placeholder.com/200x150/ff6b6b/ffffff?text=Designer+Bag" }],
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=2535&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" }],
       category: "Fashion"
     }
   ];
@@ -58,7 +58,7 @@ const Home = () => {
       currentPrice: 380.00,
       bidCount: 15,
       endDate: new Date(Date.now() + 2 * 60 * 60 * 1000),
-      images: [{ imageUrl: "https://via.placeholder.com/200x150/e91e63/ffffff?text=Art+Print" }],
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=2692&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" }],
       category: "Art"
     },
     {
@@ -67,7 +67,7 @@ const Home = () => {
       currentPrice: 520.00,
       bidCount: 12,
       endDate: new Date(Date.now() + 1.5 * 60 * 60 * 1000),
-      images: [{ imageUrl: "https://via.placeholder.com/200x150/795548/ffffff?text=Antique" }],
+      images: [{ imageUrl: "https://images.unsplash.com/photo-1567016376408-0226e4d0c1ea?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" }],
       category: "Furniture"
     }
   ];
