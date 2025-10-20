@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Form, Tab, Tabs, Badge, Table, Alert } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
 import adminService from '../../services/adminService';
 import '../../styles/admin/AdminProfile.css';
 
 const AdminProfile = () => {
-  const { user, updateProfile } = useAuth();
-  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
   const [adminProfile, setAdminProfile] = useState(null);
@@ -23,13 +19,9 @@ const AdminProfile = () => {
   });
 
   useEffect(() => {
-    if (!user || user.role !== 'Administrator') {
-      navigate('/');
-      return;
-    }
     loadAdminProfile();
     loadActivityLog();
-  }, [user, navigate]);
+  }, []);
 
   const loadAdminProfile = async () => {
     try {

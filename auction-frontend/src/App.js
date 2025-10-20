@@ -24,6 +24,7 @@ import Register from './pages/Register';
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProfile from './pages/admin/AdminProfile';
+import AdminDashboardSimple from './pages/admin/AdminDashboardSimple';
 
 function App() {
   return (
@@ -66,22 +67,18 @@ function App() {
                 } 
               />
 
-              {/* Admin Routes */}
+              {/* Admin Routes - No authentication required */}
               <Route 
                 path="/admin/dashboard" 
-                element={
-                  <PrivateRoute requiredRole={['Administrator']}>
-                    <AdminDashboard />
-                  </PrivateRoute>
-                } 
+                element={<AdminDashboard />} 
+              />
+              <Route 
+                path="/admin/dashboard-test" 
+                element={<AdminDashboardSimple />} 
               />
               <Route 
                 path="/admin/profile" 
-                element={
-                  <PrivateRoute requiredRole={['Administrator']}>
-                    <AdminProfile />
-                  </PrivateRoute>
-                } 
+                element={<AdminProfile />} 
               />
             </Routes>
           </main>

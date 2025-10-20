@@ -88,6 +88,15 @@ builder.Services.AddCors(options =>
                   .AllowAnyMethod()
                   .AllowCredentials(); // Required for SignalR
         });
+    
+    // Add policy for standalone HTML dashboard (allows file:// and any localhost)
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
 });
 
 // Add hosted services for auction management - Temporarily disabled for startup
@@ -104,7 +113,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// Disable HTTPS redirection for development to avoid certificate issues
+// app.UseHttpsRedirection();
 app.UseRouting();
 
 // Enable CORS

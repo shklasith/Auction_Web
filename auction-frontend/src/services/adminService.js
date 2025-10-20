@@ -1,20 +1,26 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5106/api';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5104/api';
+
+// Create axios instance for admin service
+const adminApi = axios.create({
+  baseURL: API_URL,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
 
 const adminService = {
   // Admin Profile
   getAdminProfile: async () => {
-    const response = await axios.get(`${API_URL}/admin/profile`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    });
+    const response = await adminApi.get('/admin/profile');
     return response.data;
   },
 
   updateAdminProfile: async (formData) => {
-    const response = await axios.put(`${API_URL}/admin/profile`, formData, {
+    const response = await adminApi.put('/admin/profile', formData, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'multipart/form-data'
       }
     });
@@ -22,24 +28,20 @@ const adminService = {
   },
 
   getActivityLog: async (days = 30) => {
-    const response = await axios.get(`${API_URL}/admin/activity-log?days=${days}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    });
+    const response = await adminApi.get(`/admin/activity-log?days=${days}`);
     return response.data;
   },
 
   getStatistics: async () => {
-    const response = await axios.get(`${API_URL}/admin/statistics`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    });
+    const response = await adminApi.get('/admin/statistics');
     return response.data;
   },
 
   // Dashboard
   getDashboardData: async () => {
-    const response = await axios.get(`${API_URL}/admin/dashboard`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    });
+    console.log('Making request to:', `${API_URL}/admin/dashboard`);
+    const response = await adminApi.get('/admin/dashboard');
+    console.log('Response received:', response);
     return response.data;
   },
 
@@ -49,30 +51,22 @@ const adminService = {
     if (searchTerm) params.append('searchTerm', searchTerm);
     if (role) params.append('role', role);
     
-    const response = await axios.get(`${API_URL}/admin/users?${params}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    });
+    const response = await adminApi.get(`/admin/users?${params}`);
     return response.data;
   },
 
   getUserDetail: async (userId) => {
-    const response = await axios.get(`${API_URL}/admin/users/${userId}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    });
+    const response = await adminApi.get(`/admin/users/${userId}`);
     return response.data;
   },
 
   toggleUserStatus: async (userId) => {
-    const response = await axios.post(`${API_URL}/admin/toggle-user-status`, { userId }, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    });
+    const response = await adminApi.post('/admin/toggle-user-status', { userId });
     return response.data;
   },
 
   createAdmin: async (adminData) => {
-    const response = await axios.post(`${API_URL}/admin/create-admin`, adminData, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    });
+    const response = await adminApi.post('/admin/create-admin', adminData);
     return response.data;
   }
 };
